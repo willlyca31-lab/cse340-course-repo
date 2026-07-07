@@ -1,3 +1,9 @@
+app.get("/categories", (req, res) => {
+    res.render("categories", {
+        title: "Service Project Categories"
+    });
+});
+
 const express = require("express");
 const path = require("path");
 
