@@ -1,22 +1,38 @@
-<%- include("partials/header") %>
+require("dotenv").config();
 
-<main>
+const express = require("express");
+const path = require("path");
 
-    <h1><%= title %></h1>
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-    <h2>Welcome to the CSE 340 Service Network!</h2>
+// Static files
+app.use(express.static(path.join(__dirname, "public")));
 
-    <p>
-        Our mission is to promote service throughout the world by connecting
-        volunteers with organizations that make a difference.
-    </p>
+// EJS
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "src/views"));
 
-    <img
-        class="main-logo"
-        src="/images/cse340-service-network.png"
-        alt="CSE 340 Service Network Logo"
-    >
+/* Routes */
 
-</main>
+app.get("/", (req, res) => {
+    res.render("home", {
+        title: "Home"
+    });
+});
 
-<%- include("partials/footer") %>
+app.get("/organizations", (req, res) => {
+    res.render("organizations", {
+        title: "Our Partner Organizations"
+    });
+});
+
+app.get("/projects", (req, res) => {
+    res.render("projects", {
+        title: "Service Projects"
+    });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
