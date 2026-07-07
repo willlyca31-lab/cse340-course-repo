@@ -1,38 +1,24 @@
-require("dotenv").config();
+<%- include("partials/header") %>
 
-const express = require("express");
-const path = require("path");
+<main>
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+```
+<h1><%= title %></h1>
 
-// Static files
-app.use(express.static(path.join(__dirname, "public")));
+<section class="hero">
+    <h2>Welcome to Community Service Hub</h2>
 
-// EJS
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "src/views"));
+    <p>
+        Our mission is to connect volunteers with meaningful service
+        opportunities that strengthen communities and improve lives.
+    </p>
 
-/* Routes */
+    <a href="/projects" class="btn">
+        Explore Projects
+    </a>
+</section>
+```
 
-app.get("/", (req, res) => {
-    res.render("home", {
-        title: "Home"
-    });
-});
+</main>
 
-app.get("/organizations", (req, res) => {
-    res.render("organizations", {
-        title: "Our Partner Organizations"
-    });
-});
-
-app.get("/projects", (req, res) => {
-    res.render("projects", {
-        title: "Service Projects"
-    });
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+<%- include("partials/footer") %>

@@ -1,43 +1,147 @@
-body {
-    font-family: Arial, Helvetica, sans-serif;
+:root {
+    --primary: #0f4c81;
+    --secondary: #1d3557;
+    --accent: #2a9d8f;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0,0,0,.1);
+}
+
+* {
     margin: 0;
-    background: #f4f4f4;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
 }
 
 header {
-    background: #003366;
-    color: white;
-    padding: 20px;
+    background: var(--secondary);
+    color: var(--white);
+    padding: 1rem 0;
+}
+
+header h1 {
+    text-align: center;
+    margin-bottom: 1rem;
 }
 
 nav ul {
     display: flex;
+    justify-content: center;
+    gap: 2rem;
     list-style: none;
-    gap: 20px;
-    padding: 0;
+    flex-wrap: wrap;
 }
 
 nav a {
     color: white;
     text-decoration: none;
+    font-weight: 600;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: var(--accent);
 }
 
 main {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 2rem auto;
+}
+
+.hero {
     background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.hero h2 {
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    padding: .75rem 1.5rem;
+    border-radius: 8px;
+}
+
+.btn:hover {
+    opacity: .9;
+}
+
+section {
+    background: white;
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
 }
 
 img {
-    max-width: 250px;
-    margin: 10px 0;
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    display: block;
+    margin: 1rem auto;
+}
+
+ul {
+    padding-left: 2rem;
 }
 
 footer {
-    text-align: center;
-    background: #003366;
+    background: var(--secondary);
     color: white;
-    padding: 20px;
-    margin-top: 30px;
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .hero {
+        padding: 2rem;
+    }
 }
