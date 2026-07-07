@@ -1,46 +1,51 @@
-require("dotenv").config();
+import express from "express";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const express = require("express");
-const path = require("path");
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Static middleware
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
-// EJS setup
+// View Engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
 
-// Home
-app.get("/", (req, res) => {
-res.render("home", {
-title: "Home"
-});
+/*
+ * Routes
+ */
+
+app.get("/", async (req, res) => {
+    const title = "Home";
+
+    res.render("home", { title });
 });
 
-// Organizations
-app.get("/organizations", (req, res) => {
-res.render("organizations", {
-title: "Our Partner Organizations"
-});
+app.get("/organizations", async (req, res) => {
+    const title = "Our Partner Organizations";
+
+    res.render("organizations", { title });
 });
 
-// Projects
-app.get("/projects", (req, res) => {
-res.render("projects", {
-title: "Service Projects"
-});
+app.get("/projects", async (req, res) => {
+    const title = "Service Projects";
+
+    res.render("projects", { title });
 });
 
-// Categories
-app.get("/categories", (req, res) => {
-res.render("categories", {
-title: "Service Project Categories"
-});
+app.get("/categories", async (req, res) => {
+    const title = "Service Project Categories";
+
+    res.render("categories", { title });
 });
 
 app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
