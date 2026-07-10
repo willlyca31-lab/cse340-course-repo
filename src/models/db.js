@@ -14,3 +14,7 @@ const pool = new Pool({
 });
 
 export default pool;
+
+pool.on("error", (err) => {
+    console.error("Unexpected database error", err);
+});
