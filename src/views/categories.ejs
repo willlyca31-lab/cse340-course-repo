@@ -7,16 +7,10 @@
     <section class="card">
 
         <ul>
-
-            <li>Environmental</li>
-
-            <li>Educational</li>
-
-            <li>Community Service</li>
-
-            <li>Health and Wellness</li>
-
-        </ul>
+          <% categories.forEach(category => { %>
+              <li><%= category.name %></li>
+          <% }) %>
+       </ul>
 
     </section>
 

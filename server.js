@@ -1,3 +1,4 @@
+import { getAllCategories } from "./src/models/categories.js";
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
@@ -41,9 +42,19 @@ app.get("/projects", async (req, res) => {
 });
 
 app.get("/categories", async (req, res) => {
-    const title = "Service Project Categories";
+    try {
+        const title = "Service Project Categories";
 
-    res.render("categories", { title });
+        const categories = await getAllCategories();
+
+        res.render("categories", {
+            title,
+            categories
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error loading categories");
+    }
 });
 
 app.listen(PORT, () => {
