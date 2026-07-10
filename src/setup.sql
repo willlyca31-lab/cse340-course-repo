@@ -10,6 +10,11 @@ CREATE TABLE public.category (
     name VARCHAR(100) NOT NULL UNIQUE
 );
 
+CREATE TABLE public.organization (
+    organization_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
 -- Project_Category junction table
 CREATE TABLE public.project_category (
     project_id INT NOT NULL,
