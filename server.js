@@ -42,7 +42,9 @@ app.get("/projects", async (req, res) => {
 });
 
 app.get("/categories", async (req, res) => {
+
     try {
+
         const title = "Service Project Categories";
 
         const categories = await getAllCategories();
@@ -51,10 +53,15 @@ app.get("/categories", async (req, res) => {
             title,
             categories
         });
+
     } catch (err) {
+
         console.error(err);
-        res.status(500).send("Error loading categories");
+
+        res.status(500).send("Unable to load categories.");
+
     }
+
 });
 
 app.listen(PORT, () => {

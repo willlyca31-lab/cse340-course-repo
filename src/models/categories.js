@@ -1,8 +1,9 @@
 import pool from "./db.js";
 
 export async function getAllCategories() {
+
     const sql = `
-        SELECT *
+        SELECT category_id, name
         FROM category
         ORDER BY name;
     `;
