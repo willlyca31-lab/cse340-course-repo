@@ -1,4 +1,4 @@
-import pool from "./db.js";
+import db from "./db.js";
 
 export async function getAllCategories() {
 

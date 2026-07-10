@@ -1,3 +1,4 @@
+import { testConnection } from "./src/models/db.js";
 import { getAllCategories } from "./src/models/categories.js";
 import express from "express";
 import dotenv from "dotenv";
@@ -65,6 +66,12 @@ app.get("/categories", async (req, res) => {
 
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, async () => {
+    try {
+        await testConnection();
+        console.log(`Server is running at http://127.0.0.1:${PORT}`);
+        console.log(`Environment: ${process.env.NODE_ENV}`);
+    } catch (error) {
+        console.error("Error connecting to the database:", error);
+    }
 });
