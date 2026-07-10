@@ -54,13 +54,14 @@ app.get("/categories", async (req, res) => {
             categories
         });
 
-    } catch (err) {
+     catch (err) {
+         console.error("Categories error:", err);
 
-        console.error(err);
-
-        res.status(500).send("Unable to load categories.");
-
-    }
+         res.status(500).send(`
+             <h1>Unable to load categories</h1>
+             <pre>${err.message}</pre>
+            `);
+}
 
 });
 
