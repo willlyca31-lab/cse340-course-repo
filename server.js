@@ -55,18 +55,15 @@ app.get("/categories", async (req, res) => {
         });
 
     } catch (err) {
-         console.error("Categories error:");
-          console.error(err);
-         console.error(err.message);
-         console.error(err.stack);
+
+        console.error("Categories error:");
+        console.error(err);
+
+        res.status(500).send("Unable to load categories.");
 
     }
 
-
-    res.status(500).send("Unable to load categories.");
-}
-
-);
+});
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
