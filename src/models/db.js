@@ -4,10 +4,10 @@ import { Pool } from "pg";
  * Connection pool for PostgreSQL database.
  */
 const pool = new Pool({
- connectionString: process.env.DB_URL,
- ssl: {
-   rejectUnauthorized: false,
- },
+    connectionString: process.env.DB_URL,
+    ssl: {
+        rejectUnauthorized: false,
+    },
 });
 
 let db = null;
@@ -26,14 +26,14 @@ if (
                 console.log("Executed query:", {
                     text: text.replace(/\s+/g, " ").trim(),
                     duration: `${duration}ms`,
-                    rows: res.rowCount
+                    rows: res.rowCount,
                 });
 
                 return res;
             } catch (error) {
                 console.error("Error in query:", {
                     text: text.replace(/\s+/g, " ").trim(),
-                    error: error.message
+                    error: error.message,
                 });
 
                 throw error;
@@ -42,24 +42,28 @@ if (
 
         async close() {
             await pool.end();
-        }
+        },
     };
 } else {
     db = pool;
 }
 
+
+// Test database connection
 const testConnection = async () => {
     try {
-        const result = await db.query("SELECT NOW() as current_time");
-        console.log(
-            "Database connection successful:",
-            result.rows[0].current_time
-        );
+        const result = await db.query(`
+            SELECT current_database(), current_user;
+        `);
+
+        console.log("Connected database:", result.rows[0]);
+
         return true;
     } catch (error) {
         console.error("Database connection failed:", error.message);
         throw error;
     }
 };
+
 
 export { db as default, testConnection };

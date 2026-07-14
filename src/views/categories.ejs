@@ -6,15 +6,16 @@
 
     <section class="card">
 
-       <ul>
-          <% if (categories.length > 0) { %>
-             <% categories.forEach(category => { %>
-                 <li><%= category.name %></li>
-             <% }) %>
-             <% } else { %>
-                 <li>No categories available.</li>
-             <% } %>
-       </ul>
+        <ul>
+            <% if (categories.length > 0) { %>
+                <% categories.forEach(category => { %>
+                    <li><%= category.name %></li>
+                <% }) %>
+            <% } else { %>
+                <li>No categories available.</li>
+            <% } %>
+        </ul>
+
     </section>
 
 </main>

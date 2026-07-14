@@ -8,7 +8,7 @@ export async function getAllCategories() {
         ORDER BY name;
     `;
 
-    const result = await pool.query(sql);
+    const result = await db.query(sql);
 
     return result.rows;
 }

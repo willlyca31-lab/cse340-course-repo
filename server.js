@@ -43,27 +43,19 @@ app.get("/projects", async (req, res) => {
 });
 
 app.get("/categories", async (req, res) => {
-
     try {
-
-        const title = "Service Project Categories";
-
         const categories = await getAllCategories();
 
         res.render("categories", {
-            title,
+            title: "Categories",
             categories
         });
-
     } catch (err) {
+         console.error("Categories error:");
+         console.error(err);
 
-        console.error("Categories error:");
-        console.error(err);
-
-        res.status(500).send("Unable to load categories.");
-
+         res.status(500).send("Unable to load categories.");
     }
-
 });
 
 app.listen(PORT, async () => {
