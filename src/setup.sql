@@ -12,7 +12,10 @@ CREATE TABLE public.category (
 
 CREATE TABLE public.organization (
     organization_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    contact_email VARCHAR(255) NOT NULL,
+    logo_filename VARCHAR(255)
 );
 
 -- Project_Category junction table
