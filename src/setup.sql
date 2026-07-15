@@ -1,21 +1,5 @@
 
 -- ========================================
--- Project Table
--- ========================================
-CREATE TABLE public.project (
-    project_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
-);
-
--- ========================================
--- Category Table
--- ========================================
-CREATE TABLE public.category (
-    category_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
-);
-
--- ========================================
 -- Organization Table
 -- ========================================
 CREATE TABLE public.organization (
