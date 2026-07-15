@@ -1,15 +1,3 @@
-=====================================================
--- CSE 340 - Database Setup Script
--- Service Organizations and Service Projects
--- =====================================================
-
--- =====================================================
--- Drop tables (allows the script to be rerun)
--- =====================================================
-DROP TABLE IF EXISTS public.project_category;
-DROP TABLE IF EXISTS public.project;
-DROP TABLE IF EXISTS public.category;
-DROP TABLE IF EXISTS public.organization;
 
 -- =====================================================
 -- Organization Table
