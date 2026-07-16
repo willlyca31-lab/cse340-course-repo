@@ -36,10 +36,21 @@ app.get("/organizations", async (req, res) => {
     res.render("organizations", { title });
 });
 
-app.get("/projects", async (req, res) => {
-    const title = "Service Projects";
+const { getAllProjects } = require("./src/models/projects");
 
-    res.render("projects", { title });
+app.get("/projects", async (req, res) => {
+    try {
+        const projects = await getAllProjects();
+
+        res.render("projects", {
+            title: "Service Projects",
+            projects
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 app.get("/categories", async (req, res) => {
