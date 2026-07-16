@@ -4,19 +4,23 @@
 
 <h1><%= title %></h1>
 
-<ul>
+<section class="projects">
 
-    <li>Community Food Drive</li>
+    <% projects.forEach(project => { %>
 
-    <li>Neighborhood Cleanup</li>
+        <article class="project-card">
 
-    <li>Tree Planting Initiative</li>
+            <h2><%= project.name %></h2>
 
-    <li>School Supply Collection</li>
+            <p>
+                <%= project.description %>
+            </p>
 
-    <li>Senior Citizen Assistance Program</li>
+        </article>
 
-</ul>
+    <% }) %>
+
+</section>
 
 </main>
 
