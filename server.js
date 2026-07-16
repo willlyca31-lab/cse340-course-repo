@@ -30,10 +30,11 @@ app.get("/", async (req, res) => {
     res.render("home", { title });
 });
 
-app.get("/organizations", async (req, res) => {
-    const title = "Our Partner Organizations";
+const organizations = await getAllOrganizations();
 
-    res.render("organizations", { title });
+res.render("organizations", {
+    title: "Our Partner Organizations",
+    organizations
 });
 
 import { getAllProjects } from "./src/models/projects.js";
