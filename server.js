@@ -36,7 +36,7 @@ app.get("/organizations", async (req, res) => {
     res.render("organizations", { title });
 });
 
-const { getAllProjects } = require("./src/models/projects");
+import { getAllProjects } from "./src/models/projects.js";
 
 app.get("/projects", async (req, res) => {
     try {
