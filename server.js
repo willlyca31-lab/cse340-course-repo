@@ -47,7 +47,6 @@ app.get("/organizations", async (req, res) => {
     }
 });
 
-import { getAllProjects } from "./src/models/projects.js";
 
 app.get("/projects", async (req, res) => {
     try {
