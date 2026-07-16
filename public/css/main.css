@@ -1,3 +1,7 @@
+/* ======================================================
+   Global Styles
+====================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,21 +10,31 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #f4f7fb;
-    color: #222;
+    background-color: #f4f7fb;
+    color: #333;
     line-height: 1.6;
 }
 
+/* ======================================================
+   Header
+====================================================== */
+
 header {
-    background: #003366;
+    background: linear-gradient(135deg, #003366, #00509d);
     color: white;
-    padding: 20px;
     text-align: center;
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.2);
 }
 
 header h1 {
     margin-bottom: 15px;
+    font-size: 2rem;
 }
+
+/* ======================================================
+   Navigation
+====================================================== */
 
 nav ul {
     display: flex;
@@ -34,8 +48,8 @@ nav a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    padding: 8px 14px;
-    border-radius: 5px;
+    padding: 10px 18px;
+    border-radius: 6px;
     transition: .3s;
 }
 
@@ -44,71 +58,154 @@ nav a:hover {
     color: #003366;
 }
 
+/* ======================================================
+   Main Layout
+====================================================== */
+
 main {
     width: 90%;
-    max-width: 1000px;
-    margin: 35px auto;
+    max-width: 1100px;
+    margin: 40px auto;
 }
 
-section {
-    background: white;
-    margin-bottom: 25px;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+h1 {
+    text-align: center;
+    color: #003366;
+    margin-bottom: 30px;
 }
+
+h2 {
+    color: #00509d;
+    margin-bottom: 12px;
+}
+
+p {
+    margin-bottom: 12px;
+}
+
+/* ======================================================
+   Cards
+====================================================== */
+
+section,
+.organization-card,
+.project-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    transition: transform .25s ease,
+                box-shadow .25s ease;
+}
+
+section:hover,
+.organization-card:hover,
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(0,0,0,.15);
+}
+
+/* ======================================================
+   Images
+====================================================== */
 
 img {
     display: block;
     margin: 20px auto;
     max-width: 220px;
-}
-
-h1 {
-    margin-bottom: 25px;
-    color: #003366;
-}
-
-h2 {
-    color: #00509d;
-    margin-bottom: 15px;
-}
-
-ul {
-    margin-left: 20px;
-}
-
-footer {
-    background: #003366;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    margin-top: 40px;
+    height: auto;
 }
 
 .hero img {
     width: 100%;
     max-width: 900px;
-    height: auto;
-    display: block;
-    margin: 0 auto 20px;
-    border-radius: 10px;
+    border-radius: 12px;
+    margin-bottom: 25px;
 }
 
-@media (max-width:768px){
+/* ======================================================
+   Buttons
+====================================================== */
 
-    nav ul{
-        flex-direction:column;
-        align-items:center;
+.btn {
+    display: inline-block;
+    background: #00509d;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.btn:hover {
+    background: #003366;
+}
+
+/* ======================================================
+   Projects & Organizations Grid
+====================================================== */
+
+.projects,
+.organizations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* ======================================================
+   Lists
+====================================================== */
+
+ul {
+    padding-left: 20px;
+}
+
+/* ======================================================
+   Footer
+====================================================== */
+
+footer {
+    background: #003366;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 50px;
+}
+
+/* ======================================================
+   Responsive Design
+====================================================== */
+
+@media (max-width: 768px) {
+
+    header h1 {
+        font-size: 1.6rem;
     }
 
-    main{
-        width:95%;
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
 
-    img{
-        width:100%;
-        max-width:250px;
+    main {
+        width: 95%;
     }
 
+    img {
+        max-width: 180px;
+    }
+
+    .projects,
+    .organizations {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        display: block;
+        width: fit-content;
+        margin: 20px auto;
+    }
 }
