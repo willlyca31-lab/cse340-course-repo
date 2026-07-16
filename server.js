@@ -1,3 +1,5 @@
+import { getAllOrganizations } from "./src/models/organizations.js";
+import { getAllProjects } from "./src/models/projects.js";
 import { testConnection } from "./src/models/db.js";
 import { getAllCategories } from "./src/models/categories.js";
 import express from "express";
@@ -30,11 +32,19 @@ app.get("/", async (req, res) => {
     res.render("home", { title });
 });
 
-const organizations = await getAllOrganizations();
+app.get("/organizations", async (req, res) => {
+    try {
+        const organizations = await getAllOrganizations();
 
-res.render("organizations", {
-    title: "Our Partner Organizations",
-    organizations
+        res.render("organizations", {
+            title: "Our Partner Organizations",
+            organizations
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Unable to load organizations.");
+    }
 });
 
 import { getAllProjects } from "./src/models/projects.js";

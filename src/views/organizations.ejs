@@ -4,51 +4,32 @@
 
 <h1><%= title %></h1>
 
-<section>
+<section class="organizations">
 
-    <h2>Bright Future</h2>
+    <% organizations.forEach(organization => { %>
 
-    <img
-        src="/images/brightfuture-logo.png"
-        alt="Bright Future"
-        width="200"
-    >
+        <article class="organization-card">
 
-    <p>
-        Bright Future provides educational opportunities to children and families.
-    </p>
+            <h2><%= organization.name %></h2>
 
-</section>
+            <img
+                src="/images/<%= organization.logo_filename %>"
+                alt="<%= organization.name %>"
+                width="200"
+            >
 
-<section>
+            <p>
+                <%= organization.description %>
+            </p>
 
-    <h2>Green Harvest</h2>
+            <p>
+                <strong>Email:</strong>
+                <%= organization.contact_email %>
+            </p>
 
-    <img
-        src="/images/greenharvest-logo.png"
-        alt="Green Harvest"
-        width="200"
-    >
+        </article>
 
-    <p>
-        Green Harvest supports sustainable farming and environmental projects.
-    </p>
-
-</section>
-
-<section>
-
-    <h2>Unity Serve</h2>
-
-    <img
-        src="/images/unityserve-logo.png"
-        alt="Unity Serve"
-        width="200"
-    >
-
-    <p>
-        Unity Serve coordinates volunteers to help local communities.
-    </p>
+    <% }) %>
 
 </section>
 
