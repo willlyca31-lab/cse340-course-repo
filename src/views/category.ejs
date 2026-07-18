@@ -1,0 +1,45 @@
+<% if (category) { %>
+
+<section class="category-details">
+
+    <h1><%= category.name %></h1>
+
+    <h2>Service Projects</h2>
+
+    <% if (projects.length > 0) { %>
+
+        <ul class="project-list">
+
+            <% projects.forEach(project => { %>
+
+                <li>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.name %>
+                    </a>
+
+                    <p>
+                        <%= project.description %>
+                    </p>
+                </li>
+
+            <% }) %>
+
+        </ul>
+
+    <% } else { %>
+
+        <p>No service projects found for this category.</p>
+
+    <% } %>
+
+
+</section>
+
+
+<% } else { %>
+
+<h1>Category Not Found</h1>
+
+<p>The category you requested does not exist.</p>
+
+<% } %>

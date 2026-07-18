@@ -1,70 +1,94 @@
-import db from "./db.js";
+import {
+    getAllProjects,
+    getProjectDetails
+} from "../models/projects.js";
+
+
+import {
+    getCategoriesByProjectId
+} from "../models/categories.js";
+
 
 /*
- * Get all projects
+ * Projects page
  */
-const getAllProjects = async () => {
-    const sql = `
-        SELECT
-            project.project_id,
-            project.organization_id,
-            project.name,
-            project.description,
-            organization.name AS organization_name
-        FROM project
-        JOIN organization
-            ON project.organization_id = organization.organization_id
-        ORDER BY project.project_id;
-    `;
+const showProjectsPage = async (req, res, next) => {
 
-    const result = await db.query(sql);
-    return result.rows;
+    try {
+
+        const projects = await getAllProjects();
+
+
+        res.render("projects", {
+
+            title: "Service Projects",
+            projects
+
+        });
+
+
+    } catch(err){
+
+        next(err);
+
+    }
+
 };
+
+
 
 /*
- * Get one project by id
+ * Project details page
  */
-const getProjectDetails = async (projectId) => {
-    const sql = `
-        SELECT
-            project.project_id,
-            project.organization_id,
-            project.name,
-            project.description,
-            organization.name AS organization_name
-        FROM project
-        JOIN organization
-            ON project.organization_id = organization.organization_id
-        WHERE project.project_id = $1;
-    `;
+const showProjectDetailsPage = async (req, res, next) => {
 
-    const result = await db.query(sql, [projectId]);
+    try {
 
-    return result.rows.length ? result.rows[0] : null;
+        const projectId = req.params.id;
+
+
+        const project =
+            await getProjectDetails(projectId);
+
+
+
+        if(!project){
+
+            const err = new Error("Project Not Found");
+            err.status = 404;
+            return next(err);
+
+        }
+
+
+
+        const categories =
+            await getCategoriesByProjectId(projectId);
+
+
+
+        res.render("project", {
+
+            title: project.name,
+            project,
+            categories
+
+        });
+
+
+    } catch(err){
+
+        next(err);
+
+    }
+
 };
 
-/*
- * Get projects for one organization
- */
-const getProjectsByOrganizationId = async (organizationId) => {
-    const sql = `
-        SELECT
-            project_id,
-            organization_id,
-            name,
-            description
-        FROM project
-        WHERE organization_id = $1
-        ORDER BY project_id;
-    `;
 
-    const result = await db.query(sql, [organizationId]);
-
-    return result.rows;
-};
 
 export {
-    getAllProjects,
-    getProjectDetails,
-    getProjectsByOrganizationId
+
+    showProjectsPage,
+    showProjectDetailsPage
+
 };

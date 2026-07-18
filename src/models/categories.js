@@ -1,7 +1,9 @@
 import db from "./db.js";
 
+
 /*
  * Get all categories
+ * Used by /categories page
  */
 const getAllCategories = async () => {
 
@@ -18,8 +20,11 @@ const getAllCategories = async () => {
     return result.rows;
 };
 
+
+
 /*
- * Get one category
+ * Get one category by ID
+ * Used by /category/:id page
  */
 const getCategoryDetails = async (categoryId) => {
 
@@ -36,21 +41,26 @@ const getCategoryDetails = async (categoryId) => {
     return result.rows.length ? result.rows[0] : null;
 };
 
+
+
 /*
- * Get every project belonging to a category
+ * Get all projects belonging to a category
+ * Used by /category/:id page
  */
 const getProjectsByCategoryId = async (categoryId) => {
 
     const sql = `
         SELECT
             p.project_id,
-            p.organization_id,
             p.name,
             p.description
         FROM project p
-        JOIN project_category pc
+
+        INNER JOIN project_category pc
             ON p.project_id = pc.project_id
+
         WHERE pc.category_id = $1
+
         ORDER BY p.name;
     `;
 
@@ -59,8 +69,11 @@ const getProjectsByCategoryId = async (categoryId) => {
     return result.rows;
 };
 
+
+
 /*
- * Get all categories for one project
+ * Get all categories belonging to one project
+ * Used by /project/:id page
  */
 const getCategoriesByProjectId = async (projectId) => {
 
@@ -68,10 +81,14 @@ const getCategoriesByProjectId = async (projectId) => {
         SELECT
             c.category_id,
             c.name
+
         FROM category c
-        JOIN project_category pc
+
+        INNER JOIN project_category pc
             ON c.category_id = pc.category_id
+
         WHERE pc.project_id = $1
+
         ORDER BY c.name;
     `;
 
@@ -80,11 +97,11 @@ const getCategoriesByProjectId = async (projectId) => {
     return result.rows;
 };
 
-export {
 
+
+export {
     getAllCategories,
     getCategoryDetails,
     getProjectsByCategoryId,
     getCategoriesByProjectId
-
 };
