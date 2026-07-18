@@ -1,11 +1,16 @@
-import { getAllOrganizations } from "./src/models/organizations.js";
-import { getAllProjects } from "./src/models/projects.js";
-import { testConnection } from "./src/models/db.js";
-import { getAllCategories } from "./src/models/categories.js";
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+
+import router from "./src/routes.js";
+import { testConnection } from "./src/models/db.js";
+import {
+    logRequest,
+    setEnvironment,
+    handle404,
+    errorHandler
+} from "./src/controllers/errors.js";
 
 dotenv.config();
 
@@ -15,76 +20,48 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Static Files
+/*
+ * Static Files
+ */
 app.use(express.static(path.join(__dirname, "public")));
 
-// View Engine
+/*
+ * View Engine
+ */
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src/views"));
 
 /*
+ * Middleware
+ */
+app.use(logRequest);
+app.use(setEnvironment);
+
+/*
  * Routes
  */
+app.use(router);
 
-app.get("/", async (req, res) => {
-    const title = "Home";
+/*
+ * 404 Handler
+ */
+app.use(handle404);
 
-    res.render("home", { title });
-});
+/*
+ * Global Error Handler
+ */
+app.use(errorHandler);
 
-app.get("/organizations", async (req, res) => {
-    try {
-        const organizations = await getAllOrganizations();
-
-        res.render("organizations", {
-            title: "Our Partner Organizations",
-            organizations
-        });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Unable to load organizations.");
-    }
-});
-
-
-app.get("/projects", async (req, res) => {
-    try {
-        const projects = await getAllProjects();
-
-        res.render("projects", {
-            title: "Service Projects",
-            projects
-        });
-
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
-});
-
-app.get("/categories", async (req, res) => {
-    try {
-        const categories = await getAllCategories();
-
-        res.render("categories", {
-            title: "Categories",
-            categories
-        });
-    } catch (err) {
-         console.error("Categories error:");
-         console.error(err);
-
-         res.status(500).send("Unable to load categories.");
-    }
-});
-
+/*
+ * Start Server
+ */
 app.listen(PORT, async () => {
     try {
         await testConnection();
-        console.log(`Server is running at http://127.0.0.1:${PORT}`);
+
+        console.log(`Server running on http://localhost:${PORT}`);
         console.log(`Environment: ${process.env.NODE_ENV}`);
-    } catch (error) {
-        console.error("Error connecting to the database:", error);
+    } catch (err) {
+        console.error(err);
     }
 });
