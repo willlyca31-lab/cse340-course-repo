@@ -1,94 +1,135 @@
-import {
-    getAllProjects,
-    getProjectDetails
-} from "../models/projects.js";
-
-
-import {
-    getCategoriesByProjectId
-} from "../models/categories.js";
+import db from "./db.js";
 
 
 /*
- * Projects page
+ * Get all projects
+ * Used by /projects page
  */
-const showProjectsPage = async (req, res, next) => {
+const getAllProjects = async () => {
 
-    try {
+    const sql = `
+        SELECT
+            p.project_id,
+            p.organization_id,
+            p.name,
+            p.description,
+            o.name AS organization_name
 
-        const projects = await getAllProjects();
+        FROM project p
+
+        JOIN organization o
+            ON p.organization_id = o.organization_id
+
+        ORDER BY p.project_id;
+    `;
 
 
-        res.render("projects", {
+    const result = await db.query(sql);
 
-            title: "Service Projects",
-            projects
-
-        });
-
-
-    } catch(err){
-
-        next(err);
-
-    }
+    return result.rows;
 
 };
 
 
 
 /*
- * Project details page
+ * Get one project by ID
+ * Used by /project/:id page
  */
-const showProjectDetailsPage = async (req, res, next) => {
+const getProjectDetails = async (projectId) => {
 
-    try {
+    const sql = `
+        SELECT
+            p.project_id,
+            p.organization_id,
+            p.name,
+            p.description,
+            o.name AS organization_name
 
-        const projectId = req.params.id;
+        FROM project p
 
+        JOIN organization o
+            ON p.organization_id = o.organization_id
 
-        const project =
-            await getProjectDetails(projectId);
-
-
-
-        if(!project){
-
-            const err = new Error("Project Not Found");
-            err.status = 404;
-            return next(err);
-
-        }
+        WHERE p.project_id = $1;
+    `;
 
 
-
-        const categories =
-            await getCategoriesByProjectId(projectId);
+    const result = await db.query(sql, [projectId]);
 
 
+    return result.rows.length
+        ? result.rows[0]
+        : null;
 
-        res.render("project", {
-
-            title: project.name,
-            project,
-            categories
-
-        });
+};
 
 
-    } catch(err){
 
-        next(err);
+/*
+ * Get projects for one organization
+ * Used by organization details page
+ */
+const getProjectsByOrganizationId = async (organizationId) => {
 
-    }
+    const sql = `
+        SELECT
+            project_id,
+            organization_id,
+            name,
+            description
+
+        FROM project
+
+        WHERE organization_id = $1
+
+        ORDER BY project_id;
+    `;
+
+
+    const result = await db.query(sql, [organizationId]);
+
+
+    return result.rows;
+
+};
+
+
+
+/*
+ * Get categories for one project
+ * Used for category tags on project page
+ */
+const getCategoriesByProjectId = async (projectId) => {
+
+    const sql = `
+        SELECT
+            c.category_id,
+            c.name
+
+        FROM category c
+
+        JOIN project_category pc
+            ON c.category_id = pc.category_id
+
+        WHERE pc.project_id = $1
+
+        ORDER BY c.name;
+    `;
+
+
+    const result = await db.query(sql, [projectId]);
+
+
+    return result.rows;
 
 };
 
 
 
 export {
-
-    showProjectsPage,
-    showProjectDetailsPage
-
+    getAllProjects,
+    getProjectDetails,
+    getProjectsByOrganizationId,
+    getCategoriesByProjectId
 };

@@ -1,69 +1,82 @@
-import { Pool } from "pg";
+import pg from "pg";
+import dotenv from "dotenv";
 
-/**
- * Connection pool for PostgreSQL database.
+dotenv.config();
+
+const { Pool } = pg;
+
+
+/*
+ * Database connection
  */
+
+const isProduction =
+    process.env.NODE_ENV === "production";
+
+
 const pool = new Pool({
+
     connectionString: process.env.DB_URL,
-    ssl: {
-        rejectUnauthorized: false,
-    },
+
+    ssl: isProduction
+        ? {
+            rejectUnauthorized: false
+        }
+        : false
+
 });
 
-let db = null;
 
-if (
-    process.env.NODE_ENV === "development" &&
-    process.env.ENABLE_SQL_LOGGING === "true"
-) {
-    db = {
-        async query(text, params) {
-            try {
-                const start = Date.now();
-                const res = await pool.query(text, params);
-                const duration = Date.now() - start;
+/*
+ * Query helper
+ */
+const db = {
 
-                console.log("Executed query:", {
-                    text: text.replace(/\s+/g, " ").trim(),
-                    duration: `${duration}ms`,
-                    rows: res.rowCount,
-                });
+    query(text, params) {
 
-                return res;
-            } catch (error) {
-                console.error("Error in query:", {
-                    text: text.replace(/\s+/g, " ").trim(),
-                    error: error.message,
-                });
+        return pool.query(text, params);
 
-                throw error;
-            }
-        },
-
-        async close() {
-            await pool.end();
-        },
-    };
-} else {
-    db = pool;
-}
-
-
-// Test database connection
-const testConnection = async () => {
-    try {
-        const result = await db.query(`
-            SELECT current_database(), current_user;
-        `);
-
-        console.log("Connected database:", result.rows[0]);
-
-        return true;
-    } catch (error) {
-        console.error("Database connection failed:", error.message);
-        throw error;
     }
+
 };
 
 
-export { db as default, testConnection };
+
+/*
+ * Test database connection
+ */
+const testConnection = async () => {
+
+    try {
+
+        const result =
+            await pool.query(
+                "SELECT NOW()"
+            );
+
+
+        console.log(
+            "Database connected:",
+            result.rows[0]
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Database connection failed:",
+            error.message
+        );
+
+        throw error;
+
+    }
+
+};
+
+
+export default db;
+
+export {
+    testConnection
+};
