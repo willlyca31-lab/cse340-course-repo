@@ -1,11 +1,12 @@
 import db from "./db.js";
 
+
 /*
  * Get all organizations
  */
 const getAllOrganizations = async () => {
 
-    const sql = `
+    const query = `
         SELECT
             organization_id,
             name,
@@ -16,17 +17,19 @@ const getAllOrganizations = async () => {
         ORDER BY name;
     `;
 
-    const result = await db.query(sql);
+    const result = await db.query(query);
 
     return result.rows;
+
 };
 
+
 /*
- * Get one organization
+ * Get organization details by ID
  */
 const getOrganizationDetails = async (organizationId) => {
 
-    const sql = `
+    const query = `
         SELECT
             organization_id,
             name,
@@ -37,10 +40,17 @@ const getOrganizationDetails = async (organizationId) => {
         WHERE organization_id = $1;
     `;
 
-    const result = await db.query(sql, [organizationId]);
+    const queryParams = [organizationId];
 
-    return result.rows.length ? result.rows[0] : null;
+    const result = await db.query(query, queryParams);
+
+
+    return result.rows.length > 0
+        ? result.rows[0]
+        : null;
+
 };
+
 
 export {
     getAllOrganizations,

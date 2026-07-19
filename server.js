@@ -8,27 +8,20 @@ import router from "./src/routes.js";
 import { testConnection } from "./src/models/db.js";
 
 import {
-    logRequest,
-    setEnvironment,
-    handle404,
-    errorHandler
+    errorHandler,
+    testErrorPage
 } from "./src/controllers/errors.js";
-
 
 dotenv.config();
 
+const NODE_ENV = process.env.NODE_ENV || "development";
 
 const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-
-
 const __filename = fileURLToPath(import.meta.url);
-
 const __dirname = path.dirname(__filename);
-
-
 
 /*
  * Static Files
@@ -39,58 +32,83 @@ app.use(
     )
 );
 
-
-
 /*
  * View Engine
  */
-app.set(
-    "view engine",
-    "ejs"
-);
-
+app.set("view engine", "ejs");
 
 app.set(
     "views",
     path.join(__dirname, "src/views")
 );
 
+/*
+ * Log every request
+ */
+app.use((req, res, next) => {
 
+    if (NODE_ENV === "development") {
+
+        console.log(`${req.method} ${req.url}`);
+
+    }
+
+    next();
+
+});
 
 /*
- * Middleware
+ * Make NODE_ENV available to all templates
  */
-app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
 
+    res.locals.NODE_ENV = NODE_ENV;
+
+    next();
+
+});
+
+/*
+ * Parse Form Data
+ */
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+/*
+ * Parse JSON
+ */
 app.use(express.json());
-
-
-app.use(logRequest);
-
-app.use(setEnvironment);
-
-
 
 /*
  * Routes
  */
 app.use(router);
 
-
+/*
+ * Test 500 Error
+ */
+app.get("/test-error", testErrorPage);
 
 /*
- * 404 Handler
+ * Catch-all Route (404)
  */
-app.use(handle404);
+app.use((req, res, next) => {
 
+    const err = new Error("Page Not Found");
 
+    err.status = 404;
+
+    next(err);
+
+});
 
 /*
  * Global Error Handler
  */
 app.use(errorHandler);
-
-
 
 /*
  * Start Server
@@ -101,23 +119,13 @@ app.listen(PORT, async () => {
 
         await testConnection();
 
+        console.log(`Server running on port ${PORT}`);
 
-        console.log(
-            `Server running on port ${PORT}`
-        );
-
-
-        console.log(
-            `Environment: ${process.env.NODE_ENV}`
-        );
-
+        console.log(`Environment: ${NODE_ENV}`);
 
     } catch (err) {
 
-        console.error(
-            "Database connection failed:",
-            err
-        );
+        console.error("Database connection failed:", err);
 
     }
 

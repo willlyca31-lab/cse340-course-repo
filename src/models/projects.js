@@ -58,7 +58,7 @@ const getProjectDetails = async (projectId) => {
     const result = await db.query(sql, [projectId]);
 
 
-    return result.rows.length
+    return result.rows.length > 0
         ? result.rows[0]
         : null;
 
@@ -67,8 +67,8 @@ const getProjectDetails = async (projectId) => {
 
 
 /*
- * Get projects for one organization
- * Used by organization details page
+ * Get projects belonging to one organization
+ * Used by /organization/:id page
  */
 const getProjectsByOrganizationId = async (organizationId) => {
 
@@ -97,8 +97,8 @@ const getProjectsByOrganizationId = async (organizationId) => {
 
 
 /*
- * Get categories for one project
- * Used for category tags on project page
+ * Get categories belonging to one project
+ * Used by /project/:id page
  */
 const getCategoriesByProjectId = async (projectId) => {
 

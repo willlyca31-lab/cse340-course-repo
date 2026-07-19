@@ -1,11 +1,10 @@
-const showHomePage = (req, res) => {
+const showHomePage = async (req, res) => {
 
     res.render("home", {
         title: "Home"
     });
 
 };
-
 
 export {
     showHomePage

@@ -3,25 +3,23 @@ import {
     getProjectDetails,
     getCategoriesByProjectId
 } from "../models/projects.js";
-
-
 /*
- * Projects page
+ * Display all projects
  */
 const showProjectsPage = async (req, res, next) => {
 
     try {
 
-        const projects = await getAllProjects();
-
+        const projects =
+            await getAllProjects();
 
         res.render("projects", {
 
             title: "Service Projects",
+
             projects
 
         });
-
 
     } catch (err) {
 
@@ -31,28 +29,22 @@ const showProjectsPage = async (req, res, next) => {
 
 };
 
-
-
 /*
- * Project details page
+ * Display one project
  */
 const showProjectDetailsPage = async (req, res, next) => {
 
     try {
 
-        const projectId = req.params.id;
-
+        const projectId =
+            req.params.id;
 
         const project =
             await getProjectDetails(projectId);
 
-
-
         if (!project) {
 
-            const err = new Error(
-                "Project Not Found"
-            );
+            const err = new Error("Project Not Found");
 
             err.status = 404;
 
@@ -60,22 +52,18 @@ const showProjectDetailsPage = async (req, res, next) => {
 
         }
 
-
-
         const categories =
             await getCategoriesByProjectId(projectId);
-
-
 
         res.render("project", {
 
             title: project.name,
+
             project,
+
             categories
 
         });
-
-
 
     } catch (err) {
 
@@ -85,9 +73,10 @@ const showProjectDetailsPage = async (req, res, next) => {
 
 };
 
-
-
 export {
+
     showProjectsPage,
+
     showProjectDetailsPage
+
 };

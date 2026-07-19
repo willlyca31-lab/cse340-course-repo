@@ -11,13 +11,18 @@ const getAllCategories = async () => {
         SELECT
             category_id,
             name
+
         FROM category
+
         ORDER BY name;
     `;
 
+
     const result = await db.query(sql);
 
+
     return result.rows;
+
 };
 
 
@@ -32,19 +37,26 @@ const getCategoryDetails = async (categoryId) => {
         SELECT
             category_id,
             name
+
         FROM category
+
         WHERE category_id = $1;
     `;
 
+
     const result = await db.query(sql, [categoryId]);
 
-    return result.rows.length ? result.rows[0] : null;
+
+    return result.rows.length > 0
+        ? result.rows[0]
+        : null;
+
 };
 
 
 
 /*
- * Get all projects belonging to a category
+ * Get projects belonging to one category
  * Used by /category/:id page
  */
 const getProjectsByCategoryId = async (categoryId) => {
@@ -53,48 +65,28 @@ const getProjectsByCategoryId = async (categoryId) => {
         SELECT
             p.project_id,
             p.name,
-            p.description
-        FROM project p
+            p.description,
+            o.name AS organization_name
 
-        INNER JOIN project_category pc
-            ON p.project_id = pc.project_id
+        FROM project_category pc
+
+        JOIN project p
+            ON pc.project_id = p.project_id
+
+        JOIN organization o
+            ON p.organization_id = o.organization_id
 
         WHERE pc.category_id = $1
 
-        ORDER BY p.name;
+        ORDER BY p.project_id;
     `;
+
 
     const result = await db.query(sql, [categoryId]);
 
-    return result.rows;
-};
-
-
-
-/*
- * Get all categories belonging to one project
- * Used by /project/:id page
- */
-const getCategoriesByProjectId = async (projectId) => {
-
-    const sql = `
-        SELECT
-            c.category_id,
-            c.name
-
-        FROM category c
-
-        INNER JOIN project_category pc
-            ON c.category_id = pc.category_id
-
-        WHERE pc.project_id = $1
-
-        ORDER BY c.name;
-    `;
-
-    const result = await db.query(sql, [projectId]);
 
     return result.rows;
+
 };
 
 
@@ -102,6 +94,5 @@ const getCategoriesByProjectId = async (projectId) => {
 export {
     getAllCategories,
     getCategoryDetails,
-    getProjectsByCategoryId,
-    getCategoriesByProjectId
+    getProjectsByCategoryId
 };

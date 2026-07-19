@@ -8,17 +8,21 @@ import {
 } from "../models/projects.js";
 
 /*
- * Organizations page
+ * Display all organizations
  */
 const showOrganizationsPage = async (req, res, next) => {
 
     try {
 
-        const organizations = await getAllOrganizations();
+        const organizations =
+            await getAllOrganizations();
 
         res.render("organizations", {
-            title: "Partner Organizations",
+
+            title: "Our Partner Organizations",
+
             organizations
+
         });
 
     } catch (err) {
@@ -30,21 +34,24 @@ const showOrganizationsPage = async (req, res, next) => {
 };
 
 /*
- * Organization Details
+ * Display one organization
  */
 const showOrganizationDetailsPage = async (req, res, next) => {
 
     try {
 
-        const organizationId = req.params.id;
+        const organizationId =
+            req.params.id;
 
-        const organizationDetails =
+        const organization =
             await getOrganizationDetails(organizationId);
 
-        if (!organizationDetails) {
+        if (!organization) {
 
             const err = new Error("Organization Not Found");
+
             err.status = 404;
+
             return next(err);
 
         }
@@ -54,8 +61,10 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
         res.render("organization", {
 
-            title: organizationDetails.name,
-            organizationDetails,
+            title: organization.name,
+
+            organization,
+
             projects
 
         });
@@ -71,6 +80,7 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 export {
 
     showOrganizationsPage,
+
     showOrganizationDetailsPage
 
 };
