@@ -78,9 +78,6 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 };
 
 export {
-
     showOrganizationsPage,
-
     showOrganizationDetailsPage
-
 };
