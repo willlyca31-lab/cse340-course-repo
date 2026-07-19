@@ -1,4 +1,4 @@
-
+ 
 -- =====================================================
 -- Drop Existing Tables (Optional for rebuilding database)
 -- =====================================================
@@ -21,40 +21,39 @@ CREATE TABLE public.organization (
 -- =====================================================
 -- Organizations
 -- =====================================================
-INSERT INTO public.organization
+INSERT INTO public.organization 
 (name, description, contact_email, logo_filename)
 VALUES
 (
-'BrightFuture Builders',
-'A nonprofit focused on improving community infrastructure through sustainable construction projects.',
-'info@brightfuturebuilders.org',
-'brightfuture-logo.png'
+    'BrightFuture Builders',
+    'A nonprofit focused on improving community infrastructure through sustainable construction projects.',
+    'info@brightfuturebuilders.org',
+    'brightfuture-logo.png'
 ),
 (
-'GreenHarvest Growers',
-'An urban farming collective promoting food sustainability and education.',
-'contact@greenharvest.org',
-'greenharvest-logo.png'
+    'GreenHarvest Growers',
+    'An urban farming collective promoting food sustainability and education.',
+    'contact@greenharvest.org',
+    'greenharvest-logo.png'
 ),
 (
-'UnityServe Volunteers',
-'A volunteer organization supporting local charities and community service.',
-'hello@unityserve.org',
-'unityserve-logo.png'
+    'UnityServe Volunteers',
+    'A volunteer organization supporting local charities and community service.',
+    'hello@unityserve.org',
+    'unityserve-logo.png'
 ),
 (
-'Hope Health Outreach',
-'A nonprofit providing health education and free community medical services.',
-'contact@hopehealth.org',
-'hopehealth-logo.png'
+    'Hope Health Outreach',
+    'A nonprofit providing health education and free community medical services.',
+    'contact@hopehealth.org',
+    'hopehealth-logo.png'
 ),
 (
-'FutureTech Mentors',
-'Helping youth develop technology skills through mentoring and workshops.',
-'info@futuretechmentors.org',
-'futuretech-logo.png'
+    'FutureTech Mentors',
+    'Helping youth develop technology skills through mentoring and workshops.',
+    'info@futuretechmentors.org',
+    'futuretech-logo.png'
 );
-
 -- =====================================================
 -- Project Table
 -- =====================================================
