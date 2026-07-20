@@ -1,14 +1,33 @@
 {
   "name": "cse340-course-repo",
   "version": "1.0.0",
+  "description": "",
+  "homepage": "[cse340-course-repo]",
+  "bugs": {
+    "url":"[cse340-course-repo]"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+[cse340-course-repo]"
+  },
   "type": "module",
+  "main": "server.js",
+  "license": "ISC",
+  "author": "",
+
+
   "scripts": {
-    "start": "node server.js"
+     "dev": "nodemon server.js",
+     "start": "node server.js"
   },
   "dependencies": {
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
-    "express": "^4.21.2",
+    "express": "^5.2.1",
     "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }
+

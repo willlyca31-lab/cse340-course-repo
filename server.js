@@ -14,11 +14,17 @@ import {
 
 dotenv.config();
 
-const NODE_ENV = process.env.NODE_ENV || "development";
+// Define the application environment
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
+
+// Define the port number the server will listen on
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+app.get('/', (req, res) => {
+  res.send('Hello from Express!');
+});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
