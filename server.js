@@ -14,20 +14,22 @@ import {
 
 dotenv.config();
 
-// Define the application environment
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
-// Define the port number the server will listen on
+// Define the application environment
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
+
+
+// Define the port number
 const PORT = process.env.PORT || 3000;
+
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello from Express!');
-});
 
+// File paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
 
 /*
  * Static Files
@@ -38,6 +40,7 @@ app.use(
     )
 );
 
+
 /*
  * View Engine
  */
@@ -47,6 +50,7 @@ app.set(
     "views",
     path.join(__dirname, "src/views")
 );
+
 
 /*
  * Log every request
@@ -63,8 +67,9 @@ app.use((req, res, next) => {
 
 });
 
+
 /*
- * Make NODE_ENV available to all templates
+ * Make NODE_ENV available to templates
  */
 app.use((req, res, next) => {
 
@@ -73,6 +78,7 @@ app.use((req, res, next) => {
     next();
 
 });
+
 
 /*
  * Parse Form Data
@@ -83,23 +89,27 @@ app.use(
     })
 );
 
+
 /*
  * Parse JSON
  */
 app.use(express.json());
+
 
 /*
  * Routes
  */
 app.use(router);
 
+
 /*
  * Test 500 Error
  */
 app.get("/test-error", testErrorPage);
 
+
 /*
- * Catch-all Route (404)
+ * Catch-all 404 Route
  */
 app.use((req, res, next) => {
 
@@ -111,10 +121,12 @@ app.use((req, res, next) => {
 
 });
 
+
 /*
  * Global Error Handler
  */
 app.use(errorHandler);
+
 
 /*
  * Start Server
@@ -131,7 +143,10 @@ app.listen(PORT, async () => {
 
     } catch (err) {
 
-        console.error("Database connection failed:", err);
+        console.error(
+            "Database connection failed:",
+            err
+        );
 
     }
 
