@@ -36,7 +36,7 @@ const showOrganizationsPage = async (req, res, next) => {
 /*
  * Display one organization
  */
-const showorganizationDetailsPage = async (req, res, next) => {
+const showOrganizationDetailsPage = async (req, res, next) => {
 
     try {
 
@@ -44,11 +44,11 @@ const showorganizationDetailsPage = async (req, res, next) => {
             req.params.id;
 
         const organization =
-            await getorganizationDetails(organizationId);
+            await getOrganizationDetails(organizationId);
 
         if (!organization) {
 
-            const err = new Error("organization Not Found");
+            const err = new Error("Organization Not Found");
 
             err.status = 404;
 
@@ -57,7 +57,7 @@ const showorganizationDetailsPage = async (req, res, next) => {
         }
 
         const projects =
-            await getProjectsByorganizationId(organizationId);
+            await getProjectsByOrganizationId(organizationId);
 
         res.render("organization", {
 
@@ -78,6 +78,6 @@ const showorganizationDetailsPage = async (req, res, next) => {
 };
 
 export {
-    showorganizationsPage,
-    showorganizationDetailsPage
+    showOrganizationsPage,
+    showOrganizationDetailsPage
 };
