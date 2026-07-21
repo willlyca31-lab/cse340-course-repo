@@ -1,49 +1,55 @@
 <%- include("partials/header") %>
 
-<% if (category) { %>
+<main>
 
-<section class="category-details">
+    <% if (category) { %>
 
-    <h1><%= category.name %></h1>
+        <section class="category-details">
 
-    <h2>Service Projects</h2>
+            <h1><%= category.name %></h1>
 
-    <% if (projects.length > 0) { %>
+            <h2>Service Projects</h2>
 
-        <ul class="project-list">
+            <% if (projects && projects.length > 0) { %>
 
-            <% projects.forEach(project => { %>
+                <ul class="project-list">
 
-                <li>
-                    <a href="/project/<%= project.project_id %>">
-                        <%= project.name %>
-                    </a>
+                    <% projects.forEach(project => { %>
 
-                    <p>
-                        <%= project.description %>
-                    </p>
-                </li>
+                        <li>
+                            <h3>
+                                <a href="/project/<%= project.project_id %>">
+                                    <%= project.name %>
+                                </a>
+                            </h3>
 
-            <% }) %>
+                            <p><%= project.description %></p>
+                        </li>
 
-        </ul>
+                    <% }) %>
+
+                </ul>
+
+            <% } else { %>
+
+                <p>No service projects found for this category.</p>
+
+            <% } %>
+
+        </section>
 
     <% } else { %>
 
-        <p>No service projects found for this category.</p>
+        <section>
+
+            <h1>Category Not Found</h1>
+
+            <p>The category you requested does not exist.</p>
+
+        </section>
 
     <% } %>
 
-
-</section>
-
-
-<% } else { %>
-
-<h1>Category Not Found</h1>
-
-<p>The category you requested does not exist.</p>
-
-<% } %>
+</main>
 
 <%- include("partials/footer") %>
