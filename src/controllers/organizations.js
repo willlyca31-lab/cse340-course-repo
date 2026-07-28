@@ -85,6 +85,7 @@ const showNewOrganizationForm = async (req, res) => {
 
 export {
     showOrganizationsPage,
-    showOrganizationDetailsPage
+    showOrganizationDetailsPage,
+    showNewOrganizationForm
 };
 
