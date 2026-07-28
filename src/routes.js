@@ -43,4 +43,7 @@ router.get("/category/:id", showCategoryDetailsPage);
 
 router.get("/test-error", testErrorPage);
 
+// Route for new organization page
+router.get('/new-organization', showNewOrganizationForm);
+
 export default router;

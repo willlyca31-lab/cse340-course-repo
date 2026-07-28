@@ -2,76 +2,52 @@
 
 <main>
 
-<h1><%= title %></h1>
+    <h1><%= title %></h1>
 
+    <section class="organizations">
 
-<section class="organizations">
+        <% if (organizations && organizations.length > 0) { %>
 
+            <% organizations.forEach(organization => { %>
 
-    <% if (organizations && organizations.length > 0) { %>
+                <article class="organization-card">
 
+                    <h2>
+                        <a href="/organization/<%= organization.organization_id %>">
+                            <%= organization.name %>
+                        </a>
+                    </h2>
 
-        <% organizations.forEach(organization => { %>
+                    <img
+                        src="/images/<%= organization.logo_filename %>"
+                        alt="<%= organization.name %>"
+                        width="200"
+                    >
 
+                    <p>
+                        <%= organization.description %>
+                    </p>
 
-            <article class="organization-card">
+                    <p>
+                        <strong>Email:</strong>
+                        <%= organization.contact_email %>
+                    </p>
 
+                </article>
 
-                <h2>
+            <% }) %>
 
-                    <a href="/organization/<%= organization.organization_id %>">
+        <% } else { %>
 
-                        <%= organization.name %>
+            <p>No organizations available.</p>
 
-                    </a>
+        <% } %>
 
-                </h2>
+    </section>
 
-
-
-                <img
-                    src="/images/<%= organization.logo_filename %>"
-                    alt="<%= organization.name %>"
-                    width="200"
-                >
-
-
-
-                <p>
-                    <%= organization.description %>
-                </p>
-
-
-
-                <p>
-
-                    <strong>Email:</strong>
-
-                    <%= organization.contact_email %>
-
-                </p>
-
-
-
-            </article>
-
-
-        <% }) %>
-
-
-    <% } else { %>
-
-
-        <p>
-            No organizations available.
-        </p>
-
-
-    <% } %>
-
-
-
-</section>
+    <p>
+        <a href="/new-organization">Add a new organization</a>
+    </p>
 
 </main>
 
