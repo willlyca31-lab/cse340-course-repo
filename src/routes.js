@@ -3,8 +3,9 @@ import express from "express";
 import { showHomePage } from "./controllers/index.js";
 
 import {
-    showOrganizationsPage,
-    showOrganizationDetailsPage
+  showOrganizationsPage,
+  showOrganizationDetailsPage,
+  showNewOrganizationForm
 } from "./controllers/organizations.js";
 
 import {
