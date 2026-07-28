@@ -1,3 +1,4 @@
+import session from "express-session";
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
@@ -14,6 +15,8 @@ import {
 
 dotenv.config();
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
@@ -25,10 +28,31 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+/*
+ * Session Management
+ */
+app.use(
+    session({
+        secret: SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 60 * 60 * 1000
+        }
+    })
+);
+
 
 // File paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+/*
+ * Allow Express to receive and process common POST data
+ */
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 
 /*
@@ -81,22 +105,6 @@ app.use((req, res, next) => {
 
 
 /*
- * Parse Form Data
- */
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
-
-
-/*
- * Parse JSON
- */
-app.use(express.json());
-
-
-/*
  * Routes
  */
 app.use(router);
@@ -138,7 +146,6 @@ app.listen(PORT, async () => {
         await testConnection();
 
         console.log(`Server running on port ${PORT}`);
-
         console.log(`Environment: ${NODE_ENV}`);
 
     } catch (err) {

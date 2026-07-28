@@ -1,6 +1,7 @@
 import {
     getAllOrganizations,
-    getOrganizationDetails
+    getOrganizationDetails,
+    createOrganization
 } from "../models/organizations.js";
 
 import {
@@ -40,8 +41,7 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
     try {
 
-        const organizationId =
-            req.params.id;
+        const organizationId = req.params.id;
 
         const organization =
             await getOrganizationDetails(organizationId);
@@ -77,15 +77,45 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
 };
 
+/*
+ * Display new organization form
+ */
 const showNewOrganizationForm = async (req, res) => {
-    const title = 'Add New Organization';
 
-    res.render('new-organization', { title });
-}
+    const title = "Add New Organization";
+
+    res.render("new-organization", { title });
+
+};
+
+/*
+ * Process new organization form
+ */
+const processNewOrganizationForm = async (req, res) => {
+
+    const {
+        name,
+        description,
+        contactEmail
+    } = req.body;
+
+    // Use the placeholder logo for all new organizations
+    const logoFilename = "placeholder-logo.png";
+
+    const organizationId = await createOrganization(
+        name,
+        description,
+        contactEmail,
+        logoFilename
+    );
+
+    res.redirect(`/organization/${organizationId}`);
+
+};
 
 export {
     showOrganizationsPage,
     showOrganizationDetailsPage,
-    showNewOrganizationForm
+    showNewOrganizationForm,
+    processNewOrganizationForm
 };
-

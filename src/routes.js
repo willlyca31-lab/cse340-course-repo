@@ -3,9 +3,10 @@ import express from "express";
 import { showHomePage } from "./controllers/index.js";
 
 import {
-  showOrganizationsPage,
-  showOrganizationDetailsPage,
-  showNewOrganizationForm
+    showOrganizationsPage,
+    showOrganizationDetailsPage,
+    showNewOrganizationForm,
+    processNewOrganizationForm
 } from "./controllers/organizations.js";
 
 import {
@@ -36,15 +37,41 @@ router.get(
     showOrganizationDetailsPage
 );
 
-router.get("/projects", showProjectsPage);
-router.get("/project/:id", showProjectDetailsPage);
-
-router.get("/categories", showCategoriesPage);
-router.get("/category/:id", showCategoryDetailsPage);
-
-router.get("/test-error", testErrorPage);
-
 // Route for new organization page
-router.get('/new-organization', showNewOrganizationForm);
+router.get(
+    "/new-organization",
+    showNewOrganizationForm
+);
+
+// Route to handle new organization form submission
+router.post(
+    "/new-organization",
+    processNewOrganizationForm
+);
+
+router.get(
+    "/projects",
+    showProjectsPage
+);
+
+router.get(
+    "/project/:id",
+    showProjectDetailsPage
+);
+
+router.get(
+    "/categories",
+    showCategoriesPage
+);
+
+router.get(
+    "/category/:id",
+    showCategoryDetailsPage
+);
+
+router.get(
+    "/test-error",
+    testErrorPage
+);
 
 export default router;
