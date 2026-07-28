@@ -14,9 +14,7 @@ import {
 
 import {
     showCategoriesPage,
-    showCategoryDetailsPage,
-    showAssignCategoriesForm,
-    processAssignCategoriesForm
+    showCategoryDetailsPage
 } from "./controllers/categories.js";
 
 import {
@@ -37,40 +35,12 @@ router.get(
     showOrganizationDetailsPage
 );
 
-router.get(
-    "/projects",
-    showProjectsPage
-);
+router.get("/projects", showProjectsPage);
+router.get("/project/:id", showProjectDetailsPage);
 
-router.get(
-    "/project/:id",
-    showProjectDetailsPage
-);
+router.get("/categories", showCategoriesPage);
+router.get("/category/:id", showCategoryDetailsPage);
 
-router.get(
-    "/categories",
-    showCategoriesPage
-);
-
-router.get(
-    "/category/:id",
-    showCategoryDetailsPage
-);
-
-// Assign categories to a project
-router.get(
-    "/project/:projectId/assign-categories",
-    showAssignCategoriesForm
-);
-
-router.post(
-    "/project/:projectId/assign-categories",
-    processAssignCategoriesForm
-);
-
-router.get(
-    "/test-error",
-    testErrorPage
-);
+router.get("/test-error", testErrorPage);
 
 export default router;

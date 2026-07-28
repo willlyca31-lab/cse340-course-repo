@@ -4,26 +4,36 @@
 
     <h1><%= title %></h1>
 
-
     <% if (organization) { %>
 
     <section class="organization-details">
-
 
         <h2>
             <%= organization.name %>
         </h2>
 
-
         <p>
             <%= organization.description %>
         </p>
-
 
         <p>
             Email:
             <%= organization.contact_email %>
         </p>
+
+        <p>
+            Logo:
+            <%= organization.logo_filename %>
+        </p>
+
+        <!-- Edit Organization Link -->
+        <p>
+            <a href="/edit-organization/<%= organization.organization_id %>">
+                Edit Organization
+            </a>
+        </p>
+
+        <p><a href="/new-organization">Add a new organization</a></p>
 
 
         <h3>
@@ -33,41 +43,30 @@
 
         <% if (projects && projects.length > 0) { %>
 
-
             <ul>
 
-
                 <% projects.forEach(project => { %>
-
 
                     <li>
 
                         <a href="/project/<%= project.project_id %>">
-
                             <%= project.name %>
-
                         </a>
-
 
                     </li>
 
-
                 <% }) %>
-
 
             </ul>
 
 
         <% } else { %>
 
-
             <p>
                 No projects available for this organization.
             </p>
 
-
         <% } %>
-
 
 
     </section>
