@@ -1,239 +1,658 @@
 /* ======================================================
-   Global Styles
+   GLOBAL RESET & VARIABLES
 ====================================================== */
+
+:root {
+    --primary: #003366;
+    --secondary: #00509d;
+    --accent: #2563eb;
+    --background: #f4f7fb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --success: #16a34a;
+    --danger: #dc2626;
+
+    --shadow:
+        0 4px 15px rgba(0,0,0,.08);
+
+    --shadow-hover:
+        0 10px 25px rgba(0,0,0,.15);
+}
+
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
+
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f7fb;
-    color: #333;
-    line-height: 1.6;
+
+    font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    background:var(--background);
+
+    color:var(--text);
+
+    line-height:1.6;
 }
 
+
 /* ======================================================
-   Header
+   HEADER
 ====================================================== */
+
 
 header {
-    background: linear-gradient(135deg, #003366, #00509d);
-    color: white;
-    text-align: center;
-    padding: 25px;
-    box-shadow: 0 4px 10px rgba(0,0,0,.2);
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color:white;
+
+    text-align:center;
+
+    padding:30px 20px;
+
+    box-shadow:
+    0 5px 15px rgba(0,0,0,.2);
+
 }
+
 
 header h1 {
-    margin-bottom: 15px;
-    font-size: 2rem;
+
+    font-size:2.2rem;
+
+    letter-spacing:.5px;
+
+    margin-bottom:20px;
+
 }
 
+
 /* ======================================================
-   Navigation
+   NAVIGATION
 ====================================================== */
+
 
 nav ul {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    list-style: none;
-    flex-wrap: wrap;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:15px;
+
+    list-style:none;
+
+    flex-wrap:wrap;
+
 }
+
 
 nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-    padding: 10px 18px;
-    border-radius: 6px;
-    transition: .3s;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    padding:10px 18px;
+
+    border-radius:8px;
+
+    transition:.3s ease;
+
 }
+
 
 nav a:hover {
-    background: white;
-    color: #003366;
+
+    background:white;
+
+    color:var(--primary);
+
 }
 
+
+
 /* ======================================================
-   Main Layout
+   MAIN
 ====================================================== */
+
 
 main {
-    width: 90%;
-    max-width: 1100px;
-    margin: 40px auto;
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:45px auto;
+
 }
+
+
 
 h1 {
-    text-align: center;
-    color: #003366;
-    margin-bottom: 30px;
+
+    text-align:center;
+
+    color:var(--primary);
+
+    margin-bottom:35px;
+
 }
+
 
 h2 {
-    color: #00509d;
-    margin-bottom: 12px;
+
+    color:var(--secondary);
+
+    margin-bottom:15px;
+
 }
+
+
+h3 {
+
+    color:var(--primary);
+
+}
+
 
 p {
-    margin-bottom: 12px;
+
+    color:#374151;
+
+    margin-bottom:15px;
+
 }
 
+
+
 /* ======================================================
-   Cards
+   CARDS
 ====================================================== */
+
 
 section,
 .organization-card,
-.project-card {
-    background: white;
-    border-radius: 12px;
-    padding: 25px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
-    transition: transform .25s ease,
-                box-shadow .25s ease;
+.project-card,
+.organization-details {
+
+
+    background:var(--card);
+
+    border-radius:16px;
+
+    padding:30px;
+
+    margin-bottom:30px;
+
+    box-shadow:var(--shadow);
+
+    transition:.3s ease;
+
 }
+
 
 section:hover,
 .organization-card:hover,
 .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 18px rgba(0,0,0,.15);
+
+
+    transform:translateY(-5px);
+
+    box-shadow:var(--shadow-hover);
+
 }
 
+
+
 /* ======================================================
-   Images
+   ORGANIZATION DETAILS
 ====================================================== */
+
+
+.organization-details {
+
+
+    border-left:
+
+    5px solid var(--secondary);
+
+}
+
+
+
+.organization-logo {
+
+
+    display:block;
+
+    margin:25px auto;
+
+    max-width:220px;
+
+    width:100%;
+
+    height:auto;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    padding:12px;
+
+    background:#fafafa;
+
+}
+
+
+
+.organization-details p {
+
+    font-size:1rem;
+
+}
+
+
+
+.organization-details h3 {
+
+    margin-top:35px;
+
+    border-bottom:
+
+    2px solid var(--border);
+
+    padding-bottom:8px;
+
+}
+
+
+
+/* ======================================================
+   IMAGES
+====================================================== */
+
 
 img {
-    display: block;
-    margin: 20px auto;
-    max-width: 220px;
-    height: auto;
+
+    display:block;
+
+    max-width:100%;
+
+    height:auto;
+
+    margin:20px auto;
+
 }
+
+
 
 .hero img {
-    width: 100%;
-    max-width: 900px;
-    border-radius: 12px;
-    margin-bottom: 25px;
+
+
+    width:100%;
+
+    max-width:900px;
+
+    border-radius:16px;
+
 }
 
+
+
 /* ======================================================
-   Buttons
+   BUTTONS
 ====================================================== */
+
 
 .btn {
-    display: inline-block;
-    background: #00509d;
-    color: white;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: .3s;
+
+
+    display:inline-block;
+
+    background:var(--secondary);
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:12px 25px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+    transition:.3s;
+
 }
+
 
 .btn:hover {
-    background: #003366;
+
+    background:var(--primary);
+
+    transform:translateY(-2px);
+
 }
 
+
+
 /* ======================================================
-   Projects & Organizations Grid
+   GRID LAYOUT
 ====================================================== */
+
 
 .projects,
 .organizations {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
+
+
+    display:grid;
+
+    grid-template-columns:
+
+    repeat(auto-fit,minmax(280px,1fr));
+
+    gap:30px;
+
 }
 
+
+
 /* ======================================================
-   Lists
+   FORMS
 ====================================================== */
 
-ul {
-    padding-left: 20px;
+
+form {
+
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:16px;
+
+    box-shadow:var(--shadow);
+
 }
 
+
+
+input,
+textarea,
+select {
+
+
+    width:100%;
+
+    padding:12px;
+
+    border:
+
+    1px solid var(--border);
+
+    border-radius:8px;
+
+    font-size:1rem;
+
+    margin-bottom:20px;
+
+}
+
+
+
+input:focus,
+textarea:focus,
+select:focus {
+
+
+    outline:none;
+
+    border-color:var(--secondary);
+
+    box-shadow:
+
+    0 0 0 3px rgba(0,80,157,.15);
+
+}
+
+
+
 /* ======================================================
-   Footer
+   ALERTS
 ====================================================== */
+
+
+.alert {
+
+
+    padding:15px 20px;
+
+    border-radius:10px;
+
+    margin-bottom:20px;
+
+    font-weight:600;
+
+}
+
+
+
+.alert.success {
+
+    color:#166534;
+
+    background:#dcfce7;
+
+}
+
+
+.alert.error {
+
+    color:#991b1b;
+
+    background:#fee2e2;
+
+}
+
+
+.alert.warning {
+
+    color:#854d0e;
+
+    background:#fef9c3;
+
+}
+
+
+.alert.info {
+
+    color:#155e75;
+
+    background:#cffafe;
+
+}
+
+
+
+/* ======================================================
+   FOOTER
+====================================================== */
+
 
 footer {
-    background: #003366;
-    color: white;
-    text-align: center;
-    padding: 25px;
-    margin-top: 50px;
+
+
+    background:var(--primary);
+
+    color:white;
+
+    text-align:center;
+
+    padding:30px;
+
+    margin-top:60px;
+
+}
+
+
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+
+@media(max-width:768px){
+
+
+    header h1 {
+
+        font-size:1.7rem;
+
+    }
+
+
+    nav ul {
+
+        flex-direction:column;
+
+    }
+
+
+    main {
+
+        width:95%;
+
+    }
+
+
+    section,
+    .organization-card,
+    .project-card,
+    .organization-details {
+
+        padding:20px;
+
+    }
+
+
+    .btn {
+
+        display:block;
+
+        width:max-content;
+
+        margin:20px auto;
+
+    }
+
 }
 
 /* ======================================================
-   Responsive Design
+   Add Organization Form
 ====================================================== */
 
-@media (max-width: 768px) {
-
-    header h1 {
-        font-size: 1.6rem;
-    }
-
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    main {
-        width: 95%;
-    }
-
-    img {
-        max-width: 180px;
-    }
-
-    .projects,
-    .organizations {
-        grid-template-columns: 1fr;
-    }
-
-    .btn {
-        display: block;
-        width: fit-content;
-        margin: 20px auto;
-    }
-}
-
-/* Flash message styles */
-.alert {
-    padding: 15px;
+.form-group {
     margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
 }
-.alert.success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+
+
+.form-group label {
+
+    display: block;
+
+    color: #000000;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+
 }
-.alert.error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+
+
+.form-group input,
+.form-group textarea {
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    font-size: 1rem;
+
+    color: #000000;
+
+    background-color: #ffffff;
+
 }
-.alert.warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeeba;
+
+
+.form-group textarea {
+
+    min-height: 120px;
+
+    resize: vertical;
+
 }
-.alert.info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
+
+
+.form-group input:focus,
+.form-group textarea:focus {
+
+    outline: none;
+
+    border-color: #00509d;
+
+    box-shadow: 0 0 0 3px rgba(0,80,157,.15);
+
+}
+
+
+form button {
+
+    background: #00509d;
+
+    color: white;
+
+    border: none;
+
+    padding: 12px 25px;
+
+    border-radius: 8px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+}
+
+
+form button:hover {
+
+    background: #003366;
+
 }
