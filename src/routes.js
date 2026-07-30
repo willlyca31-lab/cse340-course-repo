@@ -6,8 +6,9 @@ import {
     showOrganizationsPage,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
-    processNewOrganizationForm
-} from "./controllers/organizations.js";
+    processNewOrganizationForm,
+    organizationValidation
+} from './controllers/organizations.js';
 
 import {
     showProjectsPage,
@@ -44,8 +45,10 @@ router.get(
 );
 
 // Route to handle new organization form submission
+// Route to handle new organization form submission
 router.post(
-    "/new-organization",
+    '/new-organization',
+    organizationValidation,
     processNewOrganizationForm
 );
 
