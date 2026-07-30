@@ -92,28 +92,29 @@ const showNewOrganizationForm = async (req, res) => {
  * Process new organization form
  */
 const processNewOrganizationForm = async (req, res) => {
+  const results = validationResult(req);
 
-    const {
-        name,
-        description,
-        contactEmail
-    } = req.body;
+  if (!results.isEmpty()) {
+    results.array().forEach((error) => {
+      req.flash('error', error.msg);
+    });
 
-    // Use the placeholder logo for all new organizations
-    const logoFilename = "placeholder-logo.png";
+    return res.redirect('/new-organization');
+  }
 
-    const organizationId = await createOrganization(
-        name,
-        description,
-        contactEmail,
-        logoFilename
-      );
+  const { name, description, contactEmail } = req.body;
+  const logoFilename = 'placeholder-logo.png';
 
-        // Set a success flash message
-    req.flash('success', 'Organization added successfully!');
-    
-    res.redirect(`/organization/${organizationId}`);
+  const organizationId = await createOrganization(
+    name,
+    description,
+    contactEmail,
+    logoFilename,
+  );
 
+  req.flash('success', 'Organization added successfully!');
+
+  res.redirect(`/organization/${organizationId}`);
 };
 
 export {
