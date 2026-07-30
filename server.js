@@ -1,4 +1,3 @@
-import flash from "./src/middleware/flash.js";
 import session from "express-session";
 import express from "express";
 import dotenv from "dotenv";
@@ -7,60 +6,30 @@ import { fileURLToPath } from "url";
 
 import router from "./src/routes.js";
 
-import {
-    testConnection
-} from "./src/models/db.js";
+import { testConnection } from "./src/models/db.js";
 
 import {
-    errorHandler
+    errorHandler,
+    testErrorPage
 } from "./src/controllers/errors.js";
 
 dotenv.config();
 
-/*
- * Fix __dirname for ES Modules
- */
-const __filename =
-    fileURLToPath(import.meta.url);
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
-const __dirname =
-    path.dirname(__filename);
 
-/*
- * Environment Variables
- */
-const SESSION_SECRET =
-    process.env.SESSION_SECRET ||
-    "cse340-secret";
+// Define the application environment
+const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 
-const NODE_ENV =
-    process.env.NODE_ENV?.toLowerCase() ||
-    "development";
 
-const PORT =
-    process.env.PORT ||
-    3000;
+// Define the port number
+const PORT = process.env.PORT || 3000;
 
-/*
- * Create Express App
- */
+
 const app = express();
 
 /*
- * Body Parser Middleware
- */
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
-
-app.use(
-    express.json()
-);
-
-/*
- * Session Middleware
+ * Session Management
  */
 app.use(
     session({
@@ -73,141 +42,119 @@ app.use(
     })
 );
 
-/*
- * Flash Middleware
- */
-app.use(flash);
+
+// File paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 /*
- * Make flash messages available in all views
+ * Allow Express to receive and process common POST data
  */
-app.use(
-    (req, res, next) => {
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-        res.locals.flash = req.flash;
-
-        next();
-
-    }
-);
 
 /*
  * Static Files
  */
 app.use(
     express.static(
-        path.join(
-            __dirname,
-            "src",
-            "public"
-        )
+        path.join(__dirname, "public")
     )
 );
+
 
 /*
  * View Engine
  */
-app.set(
-    "view engine",
-    "ejs"
-);
+app.set("view engine", "ejs");
 
 app.set(
     "views",
-    path.join(
-        __dirname,
-        "src",
-        "views"
-    )
+    path.join(__dirname, "src/views")
 );
+
 
 /*
- * Global Template Variables
+ * Log every request
  */
-app.use(
-    (req, res, next) => {
+app.use((req, res, next) => {
 
-        res.locals.NODE_ENV =
-            NODE_ENV;
+    if (NODE_ENV === "development") {
 
-        next();
+        console.log(`${req.method} ${req.url}`);
 
     }
-);
+
+    next();
+
+});
+
 
 /*
- * Development Logger
+ * Make NODE_ENV available to templates
  */
-app.use(
-    (req, res, next) => {
+app.use((req, res, next) => {
 
-        if (NODE_ENV === "development") {
+    res.locals.NODE_ENV = NODE_ENV;
 
-            console.log(
-                `${req.method} ${req.originalUrl}`
-            );
+    next();
 
-        }
+});
 
-        next();
-
-    }
-);
 
 /*
  * Routes
  */
-app.use(
-    "/",
-    router
-);
+app.use(router);
+
 
 /*
- * 404 Handler
+ * Test 500 Error
  */
-app.use(
-    (req, res, next) => {
+app.get("/test-error", testErrorPage);
 
-        const err =
-            new Error(
-                "Page Not Found"
-            );
 
-        err.status = 404;
+/*
+ * Catch-all 404 Route
+ */
+app.use((req, res, next) => {
 
-        next(err);
+    const err = new Error("Page Not Found");
 
-    }
-);
+    err.status = 404;
+
+    next(err);
+
+});
+
 
 /*
  * Global Error Handler
  */
 app.use(errorHandler);
 
+
 /*
  * Start Server
  */
-app.listen(
-    PORT,
-    async () => {
+app.listen(PORT, async () => {
 
-        try {
+    try {
 
-            await testConnection();
+        await testConnection();
 
-            console.log("Database connected");
-            console.log(`Server running on port ${PORT}`);
-            console.log(`Environment: ${NODE_ENV}`);
+        console.log(`Server running on port ${PORT}`);
+        console.log(`Environment: ${NODE_ENV}`);
 
-        } catch (err) {
+    } catch (err) {
 
-            console.error(
-                "Database connection failed:",
-                err
-            );
-
-        }
+        console.error(
+            "Database connection failed:",
+            err
+        );
 
     }
-);
+
+});
