@@ -1,21 +1,10 @@
-import session from "express-session";
 import express from "express";
-import dotenv from "dotenv";
+import { fileURLToPath } from 'url';
 import path from "path";
-import { fileURLToPath } from "url";
-
-import router from "./src/routes.js";
-
 import { testConnection } from "./src/models/db.js";
-
-import {
-    errorHandler,
-    testErrorPage
-} from "./src/controllers/errors.js";
-
-dotenv.config();
-
-const SESSION_SECRET = process.env.SESSION_SECRET;
+import router from "./src/routes.js";
+import session from "express-session";
+import flash from './src/middleware/flash.js';
 
 
 // Define the application environment
@@ -25,12 +14,18 @@ const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 // Define the port number
 const PORT = process.env.PORT || 3000;
 
+const SESSION_SECRET = process.env.SESSION_SECRET;
+
+// File paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-/*
- * Session Management
+/**
+ * Configure Express middleware
  */
+
 app.use(
     session({
         secret: SESSION_SECRET,
@@ -42,11 +37,8 @@ app.use(
     })
 );
 
-
-// File paths
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// Use flash message middleware
+app.use(flash);
 
 /*
  * Allow Express to receive and process common POST data
