@@ -1,7 +1,6 @@
 import db from "./db.js";
 
 
-
 /*
  * Get all projects
  * Used by /projects page
@@ -14,8 +13,6 @@ const getAllProjects = async () => {
             p.organization_id,
             p.name,
             p.description,
-            p.location,
-            p.date,
             o.name AS organization_name
 
         FROM project p
@@ -27,9 +24,7 @@ const getAllProjects = async () => {
     `;
 
 
-    const result =
-        await db.query(sql);
-
+    const result = await db.query(sql);
 
     return result.rows;
 
@@ -37,19 +32,11 @@ const getAllProjects = async () => {
 
 
 
-
-
-
-
-
 /*
  * Get one project by ID
  * Used by /project/:id page
  */
-const getProjectDetails = async (
-    projectId
-) => {
-
+const getProjectDetails = async (projectId) => {
 
     const sql = `
         SELECT
@@ -57,8 +44,6 @@ const getProjectDetails = async (
             p.organization_id,
             p.name,
             p.description,
-            p.location,
-            p.date,
             o.name AS organization_name
 
         FROM project p
@@ -70,13 +55,7 @@ const getProjectDetails = async (
     `;
 
 
-
-    const result =
-        await db.query(
-            sql,
-            [projectId]
-        );
-
+    const result = await db.query(sql, [projectId]);
 
 
     return result.rows.length > 0
@@ -87,19 +66,11 @@ const getProjectDetails = async (
 
 
 
-
-
-
-
-
-
 /*
- * Get projects by organization
+ * Get projects belonging to one organization
+ * Used by /organization/:id page
  */
-const getProjectsByOrganizationId = async (
-    organizationId
-) => {
-
+const getProjectsByOrganizationId = async (organizationId) => {
 
     const sql = `
         SELECT
@@ -116,13 +87,7 @@ const getProjectsByOrganizationId = async (
     `;
 
 
-
-    const result =
-        await db.query(
-            sql,
-            [organizationId]
-        );
-
+    const result = await db.query(sql, [organizationId]);
 
 
     return result.rows;
@@ -131,179 +96,11 @@ const getProjectsByOrganizationId = async (
 
 
 
-
-
-
-
-
-
 /*
- * Create new project
+ * Get categories belonging to one project
+ * Used by /project/:id page
  */
-const createProject = async (
-    title,
-    description,
-    location,
-    date,
-    organizationId
-) => {
-
-
-    const sql = `
-        INSERT INTO project
-        (
-            name,
-            description,
-            location,
-            date,
-            organization_id
-        )
-
-        VALUES
-        (
-            $1,
-            $2,
-            $3,
-            $4,
-            $5
-        )
-
-        RETURNING project_id;
-    `;
-
-
-
-    const values = [
-
-        title,
-
-        description,
-
-        location,
-
-        date,
-
-        organizationId
-
-    ];
-
-
-
-    const result =
-        await db.query(
-            sql,
-            values
-        );
-
-
-
-    if(result.rows.length === 0){
-
-        throw new Error(
-            "Failed to create project"
-        );
-
-    }
-
-
-
-    return result.rows[0].project_id;
-
-};
-
-
-
-
-
-
-
-
-
-/*
- * Update project
- */
-const updateProject = async (
-    projectId,
-    name,
-    description,
-    location,
-    date,
-    organizationId
-) => {
-
-
-    const sql = `
-        UPDATE project
-
-        SET
-            name = $1,
-            description = $2,
-            location = $3,
-            date = $4,
-            organization_id = $5
-
-        WHERE project_id = $6
-
-        RETURNING project_id;
-    `;
-
-
-
-    const values = [
-
-        name,
-
-        description,
-
-        location,
-
-        date,
-
-        organizationId,
-
-        projectId
-
-    ];
-
-
-
-    const result =
-        await db.query(
-            sql,
-            values
-        );
-
-
-
-    if(result.rows.length === 0){
-
-        throw new Error(
-            "Project update failed"
-        );
-
-    }
-
-
-
-    return result.rows[0].project_id;
-
-};
-
-
-
-
-
-
-
-
-
-/*
- * Get categories belonging to project
- */
-const getCategoriesByProjectId = async (
-    projectId
-) => {
-
+const getCategoriesByProjectId = async (projectId) => {
 
     const sql = `
         SELECT
@@ -321,13 +118,7 @@ const getCategoriesByProjectId = async (
     `;
 
 
-
-    const result =
-        await db.query(
-            sql,
-            [projectId]
-        );
-
+    const result = await db.query(sql, [projectId]);
 
 
     return result.rows;
@@ -336,23 +127,9 @@ const getCategoriesByProjectId = async (
 
 
 
-
-
-
-
-
 export {
-
     getAllProjects,
-
     getProjectDetails,
-
     getProjectsByOrganizationId,
-
-    createProject,
-
-    updateProject,
-
     getCategoriesByProjectId
-
 };

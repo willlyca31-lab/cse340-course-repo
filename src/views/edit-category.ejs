@@ -1,71 +1,55 @@
-<%- include('partials/header') %>
-
+<%- include("partials/header") %>
 
 <main>
 
+    <% if (category) { %>
 
-    <h1>
-        <%= title %>
-    </h1>
+        <section class="category-details">
 
+            <h1><%= category.name %></h1>
 
+            <h2>Service Projects</h2>
 
-    <form
+            <% if (projects && projects.length > 0) { %>
 
-        action="/edit-category/<%= category.category_id %>"
+                <ul class="project-list">
 
-        method="POST"
+                    <% projects.forEach(project => { %>
 
-    >
+                        <li>
+                            <h3>
+                                <a href="/project/<%= project.project_id %>">
+                                    <%= project.name %>
+                                </a>
+                            </h3>
 
+                            <p><%= project.description %></p>
+                        </li>
 
+                    <% }) %>
 
-        <div class="form-group">
+                </ul>
 
+            <% } else { %>
 
-            <label for="name">
-                Category Name
-            </label>
+                <p>No service projects found for this category.</p>
 
+            <% } %>
 
+        </section>
 
-            <input
+    <% } else { %>
 
-                type="text"
+        <section>
 
-                id="name"
+            <h1>Category Not Found</h1>
 
-                name="name"
+            <p>The category you requested does not exist.</p>
 
-                maxlength="100"
+        </section>
 
-                value="<%= category.name %>"
-
-                required
-
-            />
-
-
-        </div>
-
-
-
-
-
-        <button type="submit">
-
-            Update Category
-
-        </button>
-
-
-
-
-    </form>
-
-
+    <% } %>
 
 </main>
 
-
-<%- include('partials/footer') %>
+<%- include("partials/footer") %>

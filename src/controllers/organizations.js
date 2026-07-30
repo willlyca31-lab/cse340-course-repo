@@ -1,73 +1,12 @@
 import {
-    body,
-    validationResult
-} from "express-validator";
-
-
-import {
     getAllOrganizations,
     getOrganizationDetails,
     createOrganization
 } from "../models/organizations.js";
 
-
 import {
     getProjectsByOrganizationId
 } from "../models/projects.js";
-
-
-
-/*
- * Validation Rules
- */
-const organizationValidation = [
-
-    body("name")
-        .trim()
-        .escape()
-        .notEmpty()
-        .withMessage(
-            "Organization name is required"
-        )
-        .isLength({
-            min: 3,
-            max: 150
-        })
-        .withMessage(
-            "Organization name must be between 3 and 150 characters"
-        ),
-
-
-    body("description")
-        .trim()
-        .escape()
-        .notEmpty()
-        .withMessage(
-            "Organization description is required"
-        )
-        .isLength({
-            max: 500
-        })
-        .withMessage(
-            "Organization description cannot exceed 500 characters"
-        ),
-
-
-    body("contactEmail")
-        .trim()
-        .normalizeEmail()
-        .notEmpty()
-        .withMessage(
-            "Contact email is required"
-        )
-        .isEmail()
-        .withMessage(
-            "Please provide a valid email address"
-        )
-
-];
-
-
 
 /*
  * Display all organizations
@@ -79,15 +18,13 @@ const showOrganizationsPage = async (req, res, next) => {
         const organizations =
             await getAllOrganizations();
 
+        res.render("organizations", {
 
-        res.render(
-            "organizations",
-            {
-                title: "Our Partner Organizations",
-                organizations
-            }
-        );
+            title: "Our Partner Organizations",
 
+            organizations
+
+        });
 
     } catch (err) {
 
@@ -97,31 +34,21 @@ const showOrganizationsPage = async (req, res, next) => {
 
 };
 
-
-
 /*
- * Display organization details
+ * Display one organization
  */
 const showOrganizationDetailsPage = async (req, res, next) => {
 
     try {
 
-        const organizationId =
-            req.params.id;
-
+        const organizationId = req.params.id;
 
         const organization =
-            await getOrganizationDetails(
-                organizationId
-            );
-
+            await getOrganizationDetails(organizationId);
 
         if (!organization) {
 
-            const err =
-                new Error(
-                    "Organization Not Found"
-                );
+            const err = new Error("Organization Not Found");
 
             err.status = 404;
 
@@ -129,22 +56,18 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
         }
 
-
         const projects =
-            await getProjectsByOrganizationId(
-                organizationId
-            );
+            await getProjectsByOrganizationId(organizationId);
 
+        res.render("organization", {
 
-        res.render(
-            "organization",
-            {
-                title: organization.name,
-                organization,
-                projects
-            }
-        );
+            title: organization.name,
 
+            organization,
+
+            projects
+
+        });
 
     } catch (err) {
 
@@ -153,119 +76,46 @@ const showOrganizationDetailsPage = async (req, res, next) => {
     }
 
 };
-
-
 
 /*
- * New organization form
+ * Display new organization form
  */
-const showNewOrganizationForm = async (req, res, next) => {
+const showNewOrganizationForm = async (req, res) => {
 
-    try {
+    const title = "Add New Organization";
 
-        res.render(
-            "new-organization",
-            {
-                title: "Add New Organization"
-            }
-        );
-
-
-    } catch (err) {
-
-        next(err);
-
-    }
+    res.render("new-organization", { title });
 
 };
-
-
 
 /*
- * Create organization
+ * Process new organization form
  */
-const processNewOrganizationForm = async (req, res, next) => {
+const processNewOrganizationForm = async (req, res) => {
 
-    try {
+    const {
+        name,
+        description,
+        contactEmail
+    } = req.body;
 
-        const errors = validationResult(req);
+    // Use the placeholder logo for all new organizations
+    const logoFilename = "placeholder-logo.png";
 
+    const organizationId = await createOrganization(
+        name,
+        description,
+        contactEmail,
+        logoFilename
+    );
 
-        if (!errors.isEmpty()) {
-
-
-            errors.array().forEach((error) => {
-
-                req.flash(
-                    "error",
-                    error.msg
-                );
-
-            });
-
-
-            return res.redirect(
-                "/new-organization"
-            );
-
-        }
-
-
-
-        const {
-            name,
-            description,
-            contactEmail
-        } = req.body;
-
-
-
-        const logoFilename =
-            "placeholder-logo.png";
-
-
-
-        const organizationId =
-            await createOrganization(
-                name,
-                description,
-                contactEmail,
-                logoFilename
-            );
-
-
-
-        req.flash(
-            "success",
-            "Organization added successfully!"
-        );
-
-
-        return res.redirect(
-            `/organization/${organizationId}`
-        );
-
-
-    } catch (err) {
-
-        next(err);
-
-    }
+    res.redirect(`/organization/${organizationId}`);
 
 };
-
-
 
 export {
-
     showOrganizationsPage,
-
     showOrganizationDetailsPage,
-
     showNewOrganizationForm,
-
-    processNewOrganizationForm,
-
-    organizationValidation
-
+    processNewOrganizationForm
 };
