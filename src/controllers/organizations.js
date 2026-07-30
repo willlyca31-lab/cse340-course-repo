@@ -1,109 +1,84 @@
 import {
-    getAllOrganizations,
-    getOrganizationDetails,
-    createOrganization
+  getAllOrganizations,
+  getOrganizationDetails,
+  createOrganization,
 } from "../models/organizations.js";
 
-import {
-    getProjectsByOrganizationId
-} from "../models/projects.js";
+import { getProjectsByOrganizationId } from "../models/projects.js";
 
 /*
  * Display all organizations
  */
 const showOrganizationsPage = async (req, res, next) => {
+  try {
+    const organizations = await getAllOrganizations();
 
-    try {
+    res.render("organizations", {
+      title: "Our Partner Organizations",
 
-        const organizations =
-            await getAllOrganizations();
-
-        res.render("organizations", {
-
-            title: "Our Partner Organizations",
-
-            organizations
-
-        });
-
-    } catch (err) {
-
-        next(err);
-
-    }
-
+      organizations,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /*
  * Display one organization
  */
 const showOrganizationDetailsPage = async (req, res, next) => {
+  try {
+    const organizationId = req.params.id;
 
-    try {
+    const organization = await getOrganizationDetails(organizationId);
 
-        const organizationId = req.params.id;
+    if (!organization) {
+      const err = new Error("Organization Not Found");
 
-        const organization =
-            await getOrganizationDetails(organizationId);
+      err.status = 404;
 
-        if (!organization) {
-
-            const err = new Error("Organization Not Found");
-
-            err.status = 404;
-
-            return next(err);
-
-        }
-
-        const projects =
-            await getProjectsByOrganizationId(organizationId);
-
-        res.render("organization", {
-
-            title: organization.name,
-
-            organization,
-
-            projects
-
-        });
-
-    } catch (err) {
-
-        next(err);
-
+      return next(err);
     }
 
+    const projects = await getProjectsByOrganizationId(organizationId);
+
+    res.render("organization", {
+      title: organization.name,
+
+      organization,
+
+      projects,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /*
  * Display new organization form
  */
 const showNewOrganizationForm = async (req, res) => {
+  const title = "Add New Organization";
 
-    const title = "Add New Organization";
-
-    res.render("new-organization", { title });
-
+  res.render("new-organization", { title });
 };
 
 /*
  * Process new organization form
  */
 const processNewOrganizationForm = async (req, res) => {
-  const results = validationResult(req);
+  //   const results = validationResult(req);
 
-  if (!results.isEmpty()) {
-    results.array().forEach((error) => {
-      req.flash('error', error.msg);
-    });
+  //   if (!results.isEmpty()) {
+  //     results.array().forEach((error) => {
+  //       req.flash('error', error.msg);
+  //     });
 
-    return res.redirect('/new-organization');
-  }
+  //     return res.redirect('/new-organization');
+  //   }
 
   const { name, description, contactEmail } = req.body;
-  const logoFilename = 'placeholder-logo.png';
+  const logoFilename = "placeholder-logo.png";
 
   const organizationId = await createOrganization(
     name,
@@ -112,14 +87,14 @@ const processNewOrganizationForm = async (req, res) => {
     logoFilename,
   );
 
-  req.flash('success', 'Organization added successfully!');
+  req.flash("success", "Organization added successfully!");
 
   res.redirect(`/organization/${organizationId}`);
 };
 
 export {
-    showOrganizationsPage,
-    showOrganizationDetailsPage,
-    showNewOrganizationForm,
-    processNewOrganizationForm
+  showOrganizationsPage,
+  showOrganizationDetailsPage,
+  showNewOrganizationForm,
+  processNewOrganizationForm,
 };
