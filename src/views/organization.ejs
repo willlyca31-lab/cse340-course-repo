@@ -1,80 +1,67 @@
-<%- include("partials/header") %>
+<%- include('partials/header') %>
 
 <main>
 
     <h1><%= title %></h1>
 
-    <% if (organization) { %>
+    <form action="/new-organization" method="POST">
 
-    <section class="organization-details">
+        <div class="form-group">
 
-        <h2><%= organization.name %></h2>
+            <label for="name">
+                Organization Name
+            </label>
 
-        <img
-            src="/images/<%= organization.logo_filename %>"
-            alt="<%= organization.name %>"
-            class="organization-logo"
-            width="200"
-        >
+            <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                maxlength="150"
+            />
 
-        <p>
-            <%= organization.description %>
-        </p>
+        </div>
 
-        <p>
-            <strong>Email:</strong>
-            <%= organization.contact_email %>
-        </p>
 
-        <p>
-            <strong>Logo File:</strong>
-            <%= organization.logo_filename %>
-        </p>
+        <div class="form-group">
 
-        <p>
-            <a class="btn" href="/edit-organization/<%= organization.organization_id %>">
-                Edit Organization
-            </a>
-        </p>
+            <label for="description">
+                Description
+            </label>
 
-        <p>
-            <a class="btn" href="/new-organization">
-                Add a New Organization
-            </a>
-        </p>
+            <textarea
+                id="description"
+                name="description"
+                required
+                maxlength="500"
+            ></textarea>
 
-        <h3>Service Projects</h3>
+        </div>
 
-        <% if (projects && projects.length > 0) { %>
 
-            <ul>
+        <div class="form-group">
 
-                <% projects.forEach(project => { %>
+            <label for="contactEmail">
+                Contact Email
+            </label>
 
-                    <li>
-                        <a href="/project/<%= project.project_id %>">
-                            <%= project.name %>
-                        </a>
-                    </li>
+            <input
+                type="email"
+                id="contactEmail"
+                name="contactEmail"
+                required
+            />
 
-                <% }) %>
+        </div>
 
-            </ul>
 
-        <% } else { %>
+        <button type="submit">
+            Create Organization
+        </button>
 
-            <p>No projects available for this organization.</p>
 
-        <% } %>
-
-    </section>
-
-    <% } else { %>
-
-        <h2>Organization Not Found</h2>
-
-    <% } %>
+    </form>
 
 </main>
 
-<%- include("partials/footer") %>
+<%- include('partials/footer') %>
