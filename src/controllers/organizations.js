@@ -11,10 +11,10 @@ import {
     getProjectsByOrganizationId
 } from "../models/projects.js";
 
-/*
- * Validation rules
- */
+
+// Validation rules
 const organizationValidation = [
+
     body("name")
         .trim()
         .escape()
@@ -22,6 +22,7 @@ const organizationValidation = [
         .withMessage("Organization name is required")
         .isLength({ min: 3, max: 150 })
         .withMessage("Organization name must be between 3 and 150 characters"),
+
 
     body("description")
         .trim()
@@ -31,6 +32,7 @@ const organizationValidation = [
         .isLength({ max: 500 })
         .withMessage("Organization description cannot exceed 500 characters"),
 
+
     body("contactEmail")
         .normalizeEmail()
         .notEmpty()
@@ -38,6 +40,8 @@ const organizationValidation = [
         .isEmail()
         .withMessage("Please provide a valid email address")
 ];
+
+
 
 /*
  * Display all organizations
@@ -49,9 +53,13 @@ const showOrganizationsPage = async (req, res, next) => {
         const organizations = await getAllOrganizations();
 
         res.render("organizations", {
+
             title: "Our Partner Organizations",
+
             organizations
+
         });
+
 
     } catch (err) {
 
@@ -61,8 +69,11 @@ const showOrganizationsPage = async (req, res, next) => {
 
 };
 
+
+
+
 /*
- * Display one organization
+ * Display organization details
  */
 const showOrganizationDetailsPage = async (req, res, next) => {
 
@@ -70,20 +81,28 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
         const organizationId = req.params.id;
 
+
         const organizationDetails =
             await getOrganizationDetails(organizationId);
+
+
 
         if (!organizationDetails) {
 
             const err = new Error("Organization Not Found");
+
             err.status = 404;
 
             return next(err);
 
         }
 
+
+
         const projects =
             await getProjectsByOrganizationId(organizationId);
+
+
 
         res.render("organization", {
 
@@ -95,6 +114,8 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
         });
 
+
+
     } catch (err) {
 
         next(err);
@@ -103,10 +124,15 @@ const showOrganizationDetailsPage = async (req, res, next) => {
 
 };
 
+
+
+
+
 /*
  * Display new organization form
  */
 const showNewOrganizationForm = async (req, res) => {
+
 
     res.render("new-organization", {
 
@@ -114,16 +140,25 @@ const showNewOrganizationForm = async (req, res) => {
 
     });
 
+
 };
+
+
+
+
+
 
 /*
  * Process new organization form
  */
 const processNewOrganizationForm = async (req, res) => {
 
+
     const results = validationResult(req);
 
+
     if (!results.isEmpty()) {
+
 
         results.array().forEach(error => {
 
@@ -131,53 +166,92 @@ const processNewOrganizationForm = async (req, res) => {
 
         });
 
+
         return res.redirect("/new-organization");
 
     }
 
+
+
     const {
+
         name,
+
         description,
+
         contactEmail
+
     } = req.body;
+
+
 
     const logoFilename = "placeholder-logo.png";
 
+
+
     const organizationId =
         await createOrganization(
+
             name,
+
             description,
+
             contactEmail,
+
             logoFilename
+
         );
 
-    req.flash("success", "Organization added successfully!");
+
+
+    req.flash(
+        "success",
+        "Organization added successfully!"
+    );
+
+
 
     res.redirect(`/organization/${organizationId}`);
 
+
 };
+
+
+
+
+
 
 /*
  * Display edit organization form
  */
 const showEditOrganizationForm = async (req, res, next) => {
 
+
     try {
 
+
         const organizationId = req.params.id;
+
+
 
         const organizationDetails =
             await getOrganizationDetails(organizationId);
 
+
+
         if (!organizationDetails) {
+
 
             const err = new Error("Organization Not Found");
 
             err.status = 404;
 
+
             return next(err);
 
         }
+
+
 
         res.render("edit-organization", {
 
@@ -187,22 +261,36 @@ const showEditOrganizationForm = async (req, res, next) => {
 
         });
 
-    } catch (err) {
+
+
+    } catch(err) {
+
 
         next(err);
 
     }
 
+
 };
+
+
+
+
+
+
 
 /*
  * Process edit organization form
  */
 const processEditOrganizationForm = async (req, res) => {
 
+
     const results = validationResult(req);
 
+
+
     if (!results.isEmpty()) {
+
 
         results.array().forEach(error => {
 
@@ -210,18 +298,34 @@ const processEditOrganizationForm = async (req, res) => {
 
         });
 
-        return res.redirect("/edit-organization/" + req.params.id);
+
+        return res.redirect(
+            "/edit-organization/" + req.params.id
+        );
 
     }
 
+
+
+
     const organizationId = req.params.id;
 
+
+
     const {
+
         name,
+
         description,
+
         contactEmail,
+
         logoFilename
+
     } = req.body;
+
+
+
 
     await updateOrganization(
 
@@ -237,11 +341,25 @@ const processEditOrganizationForm = async (req, res) => {
 
     );
 
-    req.flash("success", "Organization updated successfully!");
 
-    res.redirect(`/organization/${organizationId}`);
+
+
+    req.flash(
+        "success",
+        "Organization updated successfully!"
+    );
+
+
+
+    res.redirect(
+        `/organization/${organizationId}`
+    );
+
 
 };
+
+
+
 
 
 
