@@ -656,3 +656,194 @@ form button:hover {
     background: #003366;
 
 }
+
+/* =========================
+   Assign Categories Page
+========================= */
+
+/* Assign Categories text color */
+.categories-form h2,
+.categories-form label,
+.project-details h2,
+.project-details p,
+.project-details strong {
+    color: #000000;
+}
+
+/* Category names */
+.categories-form label {
+    color: black !important;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Checkbox category names */
+.assign-categories .category-name {
+    color: #000;
+    font-size: 1rem;
+}
+
+.assign-categories-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+}
+
+
+.assign-categories-page h1 {
+    text-align: center;
+    color: #0056a6;
+    margin-bottom: 25px;
+}
+
+
+.assign-categories-form {
+    background: rgb(135, 186, 206);
+    padding: 35px;
+    border-radius: 15px;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+.category-item label {
+
+    font-size: 1.1rem;
+
+    color: #1a1a1a;
+}
+
+
+.category-item {
+    color: black;
+    background-color: white;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 8px;
+    
+}
+
+.category-item input {
+    color: black;
+}
+
+/* Category list */
+
+.category-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+
+/* Each checkbox card */
+
+.category-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 15px;
+
+    border: 2px solid #39738d;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+
+.category-item:hover {
+
+    border-color: #0056a6;
+
+    background-color: #f0f7ff;
+
+}
+
+
+/* Checkbox */
+
+.category-item input[type="checkbox"] {
+
+    width: 20px;
+    height: 20px;
+
+    cursor: pointer;
+
+}
+
+
+
+/* Category name */
+
+.category-item label {
+
+    font-size: 1.1rem;
+
+    color: #1a1a1a;
+
+    cursor: pointer;
+
+    font-weight: 600;
+
+}
+
+
+
+/* Button */
+
+.update-category-btn {
+
+    display: block;
+
+    margin: auto;
+
+    background-color: #0056a6;
+
+    color: rgb(137, 143, 194)48, 153, 194)6, 101, 143)7, 78, 87)7, 77, 77)70, 136, 136);
+
+    border: none;
+
+    padding: 14px 35px;
+
+    border-radius: 8px;
+
+    font-size: 1rem;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: background 0.3s ease;
+
+}
+
+
+.update-category-btn:hover {
+
+    background-color: #003d75;
+
+}
+
+
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    .assign-categories-page{
+
+        padding:15px;
+
+    }
+
+
+    .category-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

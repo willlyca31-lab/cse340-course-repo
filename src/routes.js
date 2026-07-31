@@ -22,7 +22,9 @@ import {
 
 import {
     showCategoriesPage,
-    showCategoryDetailsPage
+    showCategoryDetailsPage,
+    showAssignCategoriesForm,
+    processAssignCategoriesForm
 } from "./controllers/categories.js";
 
 import {
@@ -110,6 +112,18 @@ router.get(
 router.get(
     "/test-error",
     testErrorPage
+);
+
+// Routes to handle the assign categories to project form
+
+router.get(
+    "/assign-categories/:projectId",
+    showAssignCategoriesForm
+);
+
+router.post(
+    "/assign-categories/:projectId",
+    processAssignCategoriesForm
 );
 
 export default router;
