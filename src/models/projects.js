@@ -151,6 +151,8 @@ const createProject = async (
 
 
 
+
+
 /*
  * Update existing project
  */
@@ -172,9 +174,9 @@ const updateProject = async (
     `;
 
     const values = [
-        organizationId,
-        title,
+        name,
         description,
+        organizationId,
         projectId
     ];
 

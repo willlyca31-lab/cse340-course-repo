@@ -4,8 +4,9 @@ import {
     getAllProjects,
     getProjectDetails,
     getCategoriesByProjectId,
-    createProject
-} from "../models/projects.js";
+    createProject,
+    updateProject,
+    } from "../models/projects.js";
 
 import {
     getAllOrganizations
@@ -222,6 +223,114 @@ const processNewProjectForm = async (req, res) => {
 
 };
 
+/*
+ * Process edit project form
+ */
+const processEditProjectForm = async (req,res,next)=>{
+
+
+    try {
+
+
+        const projectId =
+            req.params.id;
+
+
+        const {
+            title,
+            description,
+            organizationId
+        } = req.body;
+
+
+
+        await updateProject(
+
+            projectId,
+
+            title,
+
+            description,
+
+            organizationId
+
+        );
+
+
+
+        req.flash(
+            "success",
+            "Project updated successfully!"
+        );
+
+
+        res.redirect(
+            `/project/${projectId}`
+        );
+
+
+    } catch(err){
+
+        next(err);
+
+    }
+
+
+};
+
+/*
+ * Display edit project form
+ */
+const showEditProjectForm = async (req, res, next) => {
+
+    try {
+
+        const projectId = req.params.id;
+
+
+        const project =
+            await getProjectDetails(projectId);
+
+
+        if (!project) {
+
+            const err = new Error("Project Not Found");
+
+            err.status = 404;
+
+            return next(err);
+
+        }
+
+
+        const organizations =
+            await getAllOrganizations();
+
+
+
+        res.render(
+            "update-project",
+            {
+
+                title: "Edit Service Project",
+
+                project,
+
+                organizations
+
+            }
+        );
+
+
+    } catch(err){
+
+        next(err);
+
+    }
+
+};
+
+
 
 export {
 
@@ -232,6 +341,10 @@ export {
     showNewProjectForm,
 
     processNewProjectForm,
+
+    showEditProjectForm,
+
+    processEditProjectForm,
 
     projectValidation
 
