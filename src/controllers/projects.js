@@ -184,11 +184,11 @@ const processNewProjectForm = async (req, res) => {
     try {
 
         // Create the new project in the database
-        const newProjectId = await createProject(
+        const newProjectId = 
+        
+        await createProject(
             title,
             description,
-            location,
-            date,
             organizationId
         );
 

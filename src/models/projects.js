@@ -1,33 +1,27 @@
 import db from "./db.js";
 
-
 /*
  * Get all projects
  * Used by /projects page
  */
 const getAllProjects = async () => {
 
-    const sql = `
+    const query = `
         SELECT
             p.project_id,
             p.organization_id,
             p.name,
             p.description,
             o.name AS organization_name
-
         FROM project p
-
         JOIN organization o
             ON p.organization_id = o.organization_id
-
-        ORDER BY p.project_id;
+        ORDER BY p.name;
     `;
 
-
-    const result = await db.query(sql);
+    const result = await db.query(query);
 
     return result.rows;
-
 };
 
 
@@ -38,30 +32,24 @@ const getAllProjects = async () => {
  */
 const getProjectDetails = async (projectId) => {
 
-    const sql = `
+    const query = `
         SELECT
             p.project_id,
             p.organization_id,
             p.name,
             p.description,
             o.name AS organization_name
-
         FROM project p
-
         JOIN organization o
             ON p.organization_id = o.organization_id
-
         WHERE p.project_id = $1;
     `;
 
-
-    const result = await db.query(sql, [projectId]);
-
+    const result = await db.query(query, [projectId]);
 
     return result.rows.length > 0
         ? result.rows[0]
         : null;
-
 };
 
 
@@ -72,26 +60,20 @@ const getProjectDetails = async (projectId) => {
  */
 const getProjectsByOrganizationId = async (organizationId) => {
 
-    const sql = `
+    const query = `
         SELECT
             project_id,
             organization_id,
             name,
             description
-
         FROM project
-
         WHERE organization_id = $1
-
-        ORDER BY project_id;
+        ORDER BY name;
     `;
 
-
-    const result = await db.query(sql, [organizationId]);
-
+    const result = await db.query(query, [organizationId]);
 
     return result.rows;
-
 };
 
 
@@ -102,49 +84,118 @@ const getProjectsByOrganizationId = async (organizationId) => {
  */
 const getCategoriesByProjectId = async (projectId) => {
 
-    const sql = `
+    const query = `
         SELECT
             c.category_id,
             c.name
-
         FROM category c
-
         JOIN project_category pc
             ON c.category_id = pc.category_id
-
         WHERE pc.project_id = $1
-
         ORDER BY c.name;
     `;
 
-
-    const result = await db.query(sql, [projectId]);
-
+    const result = await db.query(query, [projectId]);
 
     return result.rows;
-
 };
 
-const createProject = async (title, description, location, date, organizationId) => {
+
+
+/*
+ * Create new project
+ */
+const createProject = async (
+    title,
+    description,
+    organizationId
+) => {
+
     const query = `
-      INSERT INTO project (title, description, location, date, organization_id)
-      VALUES ($1, $2, $3, $4, $5)
-      RETURNING project_id;
+        INSERT INTO project (
+            organization_id,
+            name,
+            description
+        )
+        VALUES (
+            $1,
+            $2,
+            $3
+        )
+        RETURNING project_id;
     `;
 
-    const queryParams = [title, description, location, date, organizationId];
-    const result = await db.query(query, queryParams);
+    const values = [
+        organizationId,
+        title,
+        description
+    ];
+
+    const result = await db.query(query, values);
 
     if (result.rows.length === 0) {
-        throw new Error('Failed to create project');
+        throw new Error("Failed to create project");
     }
 
-    if (process.env.ENABLE_SQL_LOGGING === 'true') {
-        console.log('Created new project with ID:', result.rows[0].project_id);
+    if (process.env.ENABLE_SQL_LOGGING === "true") {
+
+        console.log(
+            "Created new project with ID:",
+            result.rows[0].project_id
+        );
+
     }
 
     return result.rows[0].project_id;
-}
+};
+
+
+
+/*
+ * Update existing project
+ */
+const updateProject = async (
+    projectId,
+    title,
+    description,
+    organizationId
+) => {
+
+    const query = `
+        UPDATE project
+        SET
+            organization_id = $1,
+            name = $2,
+            description = $3
+        WHERE project_id = $4
+        RETURNING project_id;
+    `;
+
+    const values = [
+        organizationId,
+        title,
+        description,
+        projectId
+    ];
+
+    const result = await db.query(query, values);
+
+    if (result.rows.length === 0) {
+        throw new Error("Project not found");
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === "true") {
+
+        console.log(
+            "Updated project with ID:",
+            projectId
+        );
+
+    }
+
+    return result.rows[0].project_id;
+};
+
 
 
 export {
@@ -152,6 +203,6 @@ export {
     getProjectDetails,
     getProjectsByOrganizationId,
     getCategoriesByProjectId,
-    createProject
-    
+    createProject,
+    updateProject
 };
