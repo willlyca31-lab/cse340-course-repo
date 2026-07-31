@@ -9,7 +9,7 @@ import {
     processNewOrganizationForm,
     showEditOrganizationForm,
     processEditOrganizationForm,
-    organizationValidation,
+    organizationValidation
 } from "./controllers/organizations.js";
 
 import {
@@ -25,8 +25,13 @@ import {
 import {
     showCategoriesPage,
     showCategoryDetailsPage,
+    showNewCategoryForm,
+    processNewCategoryForm,
+    showEditCategoryForm,
+    processEditCategoryForm,
     showAssignCategoriesForm,
-    processAssignCategoriesForm
+    processAssignCategoriesForm,
+    categoryValidation
 } from "./controllers/categories.js";
 
 import {
@@ -138,6 +143,44 @@ router.get(
 router.post(
     "/edit-project/:id",
     processEditProjectForm
+);
+
+/*
+ * New Category Routes
+ */
+
+// Display create category form
+router.get(
+    "/new-category",
+    showNewCategoryForm
+);
+
+
+// Process create category form
+router.post(
+    "/new-category",
+    categoryValidation,
+    processNewCategoryForm
+);
+
+
+
+/*
+ * Edit Category Routes
+ */
+
+// Display edit category form
+router.get(
+    "/edit-category/:id",
+    showEditCategoryForm
+);
+
+
+// Process edit category form
+router.post(
+    "/edit-category/:id",
+    categoryValidation,
+    processEditCategoryForm
 );
 
 export default router;
