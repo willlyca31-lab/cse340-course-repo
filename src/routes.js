@@ -2,6 +2,7 @@ import express from "express";
 
 import { showHomePage } from "./controllers/index.js";
 
+
 import {
     showOrganizationsPage,
     showOrganizationDetailsPage,
@@ -12,6 +13,7 @@ import {
     organizationValidation
 } from "./controllers/organizations.js";
 
+
 import {
     showProjectsPage,
     showProjectDetailsPage,
@@ -21,6 +23,7 @@ import {
     processEditProjectForm,
     projectValidation
 } from "./controllers/projects.js";
+
 
 import {
     showCategoriesPage,
@@ -34,47 +37,68 @@ import {
     categoryValidation
 } from "./controllers/categories.js";
 
+
 import {
     testErrorPage
 } from "./controllers/errors.js";
 
+
 const router = express.Router();
 
-router.get("/", showHomePage);
+
+
+
+
+/*
+ * HOME
+ */
+
+router.get(
+    "/",
+    showHomePage
+);
+
+
+
+
+
+
+
+/*
+ * ORGANIZATIONS
+ */
+
 
 router.get(
     "/organizations",
     showOrganizationsPage
 );
 
+
 router.get(
     "/organization/:id",
     showOrganizationDetailsPage
 );
+
+
+router.get(
+    "/new-organization",
+    showNewOrganizationForm
+);
+
+
+router.post(
+    "/new-organization",
+    organizationValidation,
+    processNewOrganizationForm
+);
+
 
 router.get(
     "/edit-organization/:id",
     showEditOrganizationForm
 );
 
-
-
-// Route for new organization page
-router.get(
-    "/new-organization",
-    showNewOrganizationForm
-);
-
-// Route to handle new organization form submission
-// Route to handle new organization form submission
-
-
-// Route to handle new organization form submission
-router.post(
-    '/new-organization', 
-    organizationValidation, 
-    processNewOrganizationForm
-);
 
 router.post(
     "/edit-organization/:id",
@@ -83,54 +107,38 @@ router.post(
 );
 
 
+
+
+
+
+
+/*
+ * PROJECTS
+ */
+
+
 router.get(
     "/projects",
     showProjectsPage
 );
+
 
 router.get(
     "/project/:id",
     showProjectDetailsPage
 );
 
-// Route for new project page
+
 router.get(
     "/new-project",
     showNewProjectForm
 );
 
-// Route to handle new project form submission
+
 router.post(
     "/new-project",
     projectValidation,
     processNewProjectForm
-);
-
-router.get(
-    "/categories",
-    showCategoriesPage
-);
-
-router.get(
-    "/category/:id",
-    showCategoryDetailsPage
-);
-
-router.get(
-    "/test-error",
-    testErrorPage
-);
-
-// Routes to handle the assign categories to project form
-
-router.get(
-    "/assign-categories/:projectId",
-    showAssignCategoriesForm
-);
-
-router.post(
-    "/assign-categories/:projectId",
-    processAssignCategoriesForm
 );
 
 
@@ -142,21 +150,69 @@ router.get(
 
 router.post(
     "/edit-project/:id",
+    projectValidation,
     processEditProjectForm
 );
 
+
+
+
+
+
+
 /*
- * New Category Routes
+ * ASSIGN CATEGORIES TO PROJECT
+ *
+ * Supports both URL patterns
+ * from the assignment instructions.
  */
 
-// Display create category form
+
+
+
+
+
+router.get(
+    "/project/:projectId/assign-categories",
+    showAssignCategoriesForm
+);
+
+
+router.post(
+    "/project/:projectId/assign-categories",
+    processAssignCategoriesForm
+);
+
+
+
+
+
+
+
+
+/*
+ * CATEGORIES
+ */
+
+
+router.get(
+    "/categories",
+    showCategoriesPage
+);
+
+
+router.get(
+    "/category/:id",
+    showCategoryDetailsPage
+);
+
+
 router.get(
     "/new-category",
     showNewCategoryForm
 );
 
 
-// Process create category form
 router.post(
     "/new-category",
     categoryValidation,
@@ -164,23 +220,36 @@ router.post(
 );
 
 
-
-/*
- * Edit Category Routes
- */
-
-// Display edit category form
 router.get(
     "/edit-category/:id",
     showEditCategoryForm
 );
 
 
-// Process edit category form
 router.post(
     "/edit-category/:id",
     categoryValidation,
     processEditCategoryForm
 );
+
+
+
+
+
+
+
+/*
+ * TEST ERROR PAGE
+ */
+
+
+router.get(
+    "/test-error",
+    testErrorPage
+);
+
+
+
+
 
 export default router;

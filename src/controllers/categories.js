@@ -386,59 +386,47 @@ const processEditCategoryForm = async (
  */
 const showAssignCategoriesForm = async (
     req,
-    res
+    res,
+    next
 ) => {
 
+    try {
 
-    const projectId =
-        req.params.projectId;
+        const projectId =
+            req.params.projectId;
 
+        const projectDetails =
+            await getProjectDetails(projectId);
 
+        const categories =
+            await getAllCategories();
 
-    const projectDetails =
-        await getProjectDetails(projectId);
+        const assignedCategories =
+            await getCategoriesByServiceProjectId(projectId);
 
-
-
-    const categories =
-        await getAllCategories();
-
-
-
-    const assignedCategories =
-        await getCategoriesByServiceProjectId(projectId);
+        const title =
+            "Assign Categories to Project";
 
 
+        res.render(
+            "assign-categories",
+            {
+                title,
+                projectId,
+                projectDetails,
+                categories,
+                assignedCategories
+            }
+        );
 
-    const title =
-        "Assign Categories to Project";
 
+    } catch(error) {
 
+        next(error);
 
-    res.render(
-        "assign-categories",
-        {
-
-            title,
-
-            projectId,
-
-            projectDetails,
-
-            categories,
-
-            assignedCategories
-
-        }
-    );
-
+    }
 
 };
-
-
-
-
-
 
 
 

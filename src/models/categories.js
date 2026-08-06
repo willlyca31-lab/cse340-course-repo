@@ -346,8 +346,6 @@ export {
 
     updateCategory,
 
-    assignCategoryToProject,
-
     updateCategoryAssignments
 
 };

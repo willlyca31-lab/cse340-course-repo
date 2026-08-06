@@ -1,60 +1,170 @@
 <%- include("partials/header") %>
 
+
 <main class="assign-container">
 
-    <h1><%= title %></h1>
+
+
+    <h1>
+        <%= title %>
+    </h1>
+
+
+
 
 
     <section class="assign-card">
 
+
+
+
+
         <h2>
-            <%= projectDetails.title || projectDetails.name %>
+
+            <%= projectDetails.name %>
+
         </h2>
 
 
-        <form action="/assign-categories/<%= projectId %>" method="POST">
+
+
+
+
+
+        <form
+
+            action="/project/<%= projectId %>/assign-categories"
+
+            method="POST"
+
+        >
+
+
+
+
 
 
             <div class="category-list">
 
 
+
+
+
                 <% categories.forEach(category => { %>
+
+
+
+
 
                     <label class="category-item">
 
+
+
+
+
                         <input
+
                             type="checkbox"
+
                             name="categoryIds"
+
                             value="<%= category.category_id %>"
-                            <%= assignedCategories.some(ac => ac.category_id === category.category_id) ? "checked" : "" %>
+
+
+                            <%= 
+
+                            assignedCategories.some(
+
+                                ac => 
+
+                                ac.category_id === category.category_id
+
+                            )
+
+                            ? "checked"
+
+                            : ""
+
+                            %>
+
+
                         >
 
+
+
+
+
+
                         <span>
+
                             <%= category.name %>
+
                         </span>
+
+
+
+
 
 
                     </label>
 
 
+
+
+
                 <% }) %>
+
+
+
+
+
 
 
             </div>
 
 
-            <button type="submit" class="update-button">
+
+
+
+
+
+
+            <button
+
+                type="submit"
+
+                class="update-button"
+
+            >
+
                 Update Categories
+
+
             </button>
+
+
+
+
 
 
         </form>
 
 
+
+
+
+
+
     </section>
 
 
+
+
+
+
 </main>
+
+
 
 
 <%- include("partials/footer") %>

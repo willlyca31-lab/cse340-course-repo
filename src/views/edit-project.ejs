@@ -1,126 +1,178 @@
 <%- include("partials/header") %>
 
+
 <main>
 
-    <h1><%= title %></h1>
 
-    <form action="/edit-project/<%= project.project_id %>" method="POST">
+    <h1>
+        <%= title %>
+    </h1>
 
-        <!-- Project Title -->
+
+
+    <form
+        action="/edit-project/<%= project.project_id %>"
+        method="POST"
+    >
+
+
+
+        <!-- Project Name -->
+
         <div class="form-group">
 
+
             <label for="title">
-                Project Title
+
+                Project Name
+
             </label>
 
+
+
             <input
+
                 type="text"
+
                 id="title"
+
                 name="title"
-                value="<%= project.title %>"
-                maxlength="200"
+
+                value="<%= project.name %>"
+
                 minlength="3"
+
+                maxlength="200"
+
                 required
-            >
+
+            />
+
 
         </div>
+
+
+
+
 
 
         <!-- Description -->
+
         <div class="form-group">
+
 
             <label for="description">
+
                 Description
+
             </label>
+
+
+
 
             <textarea
+
                 id="description"
+
                 name="description"
-                rows="6"
+
                 maxlength="1000"
-                minlength="10"
+
                 required
+
             ><%= project.description %></textarea>
 
-        </div>
 
 
-        <!-- Location -->
-        <div class="form-group">
-
-            <label for="location">
-                Location
-            </label>
-
-            <input
-                type="text"
-                id="location"
-                name="location"
-                value="<%= project.location %>"
-                maxlength="200"
-                required
-            >
 
         </div>
 
 
-        <!-- Date -->
-        <div class="form-group">
 
-            <label for="date">
-                Date
-            </label>
 
-            <input
-                type="date"
-                id="date"
-                name="date"
-                value="<%= project.date ? new Date(project.date).toISOString().split('T')[0] : '' %>"
-                required
-            >
 
-        </div>
 
 
         <!-- Organization -->
+
         <div class="form-group">
 
+
             <label for="organization_id">
+
                 Organization
+
             </label>
 
+
+
+
             <select
+
                 id="organization_id"
+
                 name="organization_id"
+
                 required
+
             >
+
+
 
                 <% organizations.forEach(org => { %>
 
+
+
                     <option
+
                         value="<%= org.organization_id %>"
-                        <%= org.organization_id === project.organization_id ? "selected" : "" %>
+
+                        <%= 
+                        org.organization_id === project.organization_id
+                        ? "selected"
+                        : ""
+                        %>
+
                     >
+
                         <%= org.name %>
+
+
                     </option>
+
+
 
                 <% }) %>
 
+
+
             </select>
+
+
 
         </div>
 
 
-        <!-- Submit Button -->
-        <button
-            type="submit"
-            class="btn"
-        >
+
+
+
+
+        <button type="submit">
+
             Update Project
+
         </button>
+
+
+
 
     </form>
 
+
+
+
 </main>
+
+
 
 <%- include("partials/footer") %>
