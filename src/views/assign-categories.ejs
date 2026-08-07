@@ -56,28 +56,63 @@
 
 
 
-                <label class="category-item">
-
-                    <input
-                        type="checkbox"
-                        name="categoryIds"
-                        value="<%= category.category_id %>"
-                        <%= assignedCategories.some(
-                            ac => ac.category_id === category.category_id
-                        ) ? "checked" : "" %>
-                    >
-
-                    <span class="category-name">
-                        <%= category.name %>
-                    </span>
-
-                </label>
+                    <label class="category-item">
 
 
 
 
 
-               
+                        <input
+
+                            type="checkbox"
+
+                            name="categoryIds"
+
+                            value="<%= category.category_id %>"
+
+
+                            <%= 
+
+                            assignedCategories.some(
+
+                                ac => 
+
+                                ac.category_id === category.category_id
+
+                            )
+
+                            ? "checked"
+
+                            : ""
+
+                            %>
+
+
+                        >
+
+
+
+
+
+
+                        <span>
+
+                            <%= category.name %>
+
+                        </span>
+
+
+
+
+
+
+                    </label>
+
+
+
+
+
+                <% }) %>
 
 
 
