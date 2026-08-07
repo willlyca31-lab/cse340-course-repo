@@ -250,6 +250,14 @@ a:hover {
 
 }
 
+.add-organization-link {
+    color: #000000;
+}
+
+.add-organization-link:hover {
+    color: #333333;
+}
+
 
 
 /* ======================================================
