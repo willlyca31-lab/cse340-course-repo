@@ -1,3 +1,4 @@
+
 import express from "express";
 
 import { showHomePage } from "./controllers/index.js";
@@ -37,6 +38,16 @@ import {
     categoryValidation
 } from "./controllers/categories.js";
 
+import {
+  showUserRegistrationForm,
+  processUserRegistrationForm,
+  showLoginForm,
+  processLoginForm,
+  processLogout,
+  requireLogin,
+  showDashboard
+} from "./controllers/users.js";
+
 
 import {
     testErrorPage
@@ -59,9 +70,37 @@ router.get(
 );
 
 
+// =========================
+// USER REGISTRATION
+// =========================
+
+router.get(
+  "/register",
+  showUserRegistrationForm
+);
+
+router.post(
+  "/register",
+  processUserRegistrationForm
+);
+
+// User login routes
+router.get(
+    '/login', 
+    showLoginForm);
 
 
+router.post('/login',processLoginForm);
 
+router.get('/logout', 
+    processLogout);
+
+
+// Protected dashboard route
+router.get('/dashboard',
+     requireLogin, 
+     showDashboard
+    );
 
 
 /*

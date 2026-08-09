@@ -2,7 +2,6 @@
 
 <main>
 
-```
 <h1><%= title %></h1>
 
 <section class="hero">
@@ -22,8 +21,12 @@
         Explore Projects
     </a>
 </section>
-```
+
 
 </main>
+
+<% if (isLoggedIn) { %>
+    <p><a href="/dashboard">My Dashboard</a></p>
+<% } %>
 
 <%- include("partials/footer") %>

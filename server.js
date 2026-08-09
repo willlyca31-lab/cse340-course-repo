@@ -6,114 +6,129 @@ import router from "./src/routes.js";
 import session from "express-session";
 import flash from "./src/middleware/flash.js";
 
-// Define the application environment
-const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
+// =========================
+// Environment
+// =========================
 
-// Define the port number
+const NODE_ENV =
+    process.env.NODE_ENV?.toLowerCase() || "production";
+
 const PORT = process.env.PORT || 3000;
-
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
+// =========================
 // File paths
+// =========================
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
-/**
- * Configure Express middleware
- */
+// =========================
+// Session
+// =========================
 
 app.use(
-  session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      maxAge: 60 * 60 * 1000,
-    },
-  }),
+    session({
+        secret: SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            maxAge: 60 * 60 * 1000,
+        },
+    }),
 );
 
-// Use flash message middleware
+app.use((req, res, next) => {
+    res.locals.isLoggedIn = false;
+
+    if (req.session && req.session.user) {
+        res.locals.isLoggedIn = true;
+    }
+
+    res.locals.NODE_ENV = NODE_ENV;
+
+    next();
+});
+
+// =========================
+// Flash messages
+// =========================
+
 app.use(flash);
 
-/*
- * Allow Express to receive and process common POST data
- */
+// =========================
+// Body parsing
+// =========================
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-/*
- * Static Files
- */
-app.use(express.static(path.join(__dirname, "public")));
+// =========================
+// Static files
+// =========================
 
-/*
- * View Engine
- */
+app.use(
+    express.static(
+        path.join(__dirname, "public")
+    )
+);
+
+// =========================
+// View engine
+// =========================
+
 app.set("view engine", "ejs");
+app.set(
+    "views",
+    path.join(__dirname, "src/views")
+);
 
-app.set("views", path.join(__dirname, "src/views"));
+// =========================
+// Request logging
+// =========================
 
-/*
- * Log every request
- */
 app.use((req, res, next) => {
-  if (NODE_ENV === "development") {
-    console.log(`${req.method} ${req.url}`);
-  }
+    if (NODE_ENV === "development") {
+        console.log(`${req.method} ${req.url}`);
+        console.log("Session user:", req.session.user || "Not logged in");
+    }
 
-  next();
+    next();
 });
 
-/*
- * Make NODE_ENV available to templates
- */
-app.use((req, res, next) => {
-  res.locals.NODE_ENV = NODE_ENV;
+// =========================
+// Routes
+// =========================
 
-  next();
-});
-
-/*
- * Routes
- */
 app.use(router);
 
-// /*
-//  * Test 500 Error
-//  */
-// app.get("/test-error", testErrorPage);
+// =========================
+// 404
+// =========================
 
-/*
- * Catch-all 404 Route
- */
 app.use((req, res, next) => {
-  const err = new Error("Page Not Found");
+    const err = new Error("Page Not Found");
+    err.status = 404;
 
-  err.status = 404;
-
-  next(err);
+    next(err);
 });
 
-// /*
-//  * Global Error Handler
-//  */
-// app.use(errorHandler);
+// =========================
+// Start server
+// =========================
 
-/*
- * Start Server
- */
 app.listen(PORT, async () => {
-  try {
-    await testConnection();
+    try {
+        await testConnection();
 
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${NODE_ENV}`);
-  } catch (err) {
-    console.error("Database connection failed:", err);
-  }
+        console.log(`Server running on port ${PORT}`);
+        console.log(`Environment: ${NODE_ENV}`);
+    } catch (err) {
+        console.error(
+            "Database connection failed:",
+            err
+        );
+    }
 });
- 
- 
