@@ -539,7 +539,15 @@ button:hover,
     height: 20px;
 }
 
+.dashboard {
+  color:#eff6ff;
+}
 
+.dashboard h1,
+.dashboard h2,
+.dashboard p {
+  color: #eff6ff;
+}
 
 /* ======================================================
    ALERTS
