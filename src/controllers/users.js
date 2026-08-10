@@ -1,14 +1,20 @@
 
 import bcrypt from 'bcrypt';
-import { createUser } from '../models/users.js';
-import { authenticateUser } from '../models/users.js';
+
+import {
+    createUser,
+    authenticateUser,
+    getUsers
+} from '../models/users.js';
 
 // =========================
 // Registration
 // =========================
 
 const showUserRegistrationForm = (req, res) => {
-    res.render('register', { title: 'Register' });
+    res.render('register', {
+        title: 'Register'
+    });
 };
 
 const processUserRegistrationForm = async (req, res) => {
@@ -45,7 +51,9 @@ const processUserRegistrationForm = async (req, res) => {
 // =========================
 
 const showLoginForm = (req, res) => {
-    res.render('login', { title: 'Login' });
+    res.render('login', {
+        title: 'Login'
+    });
 };
 
 const processLoginForm = async (req, res) => {
@@ -58,7 +66,10 @@ const processLoginForm = async (req, res) => {
             // Store authenticated user in session
             req.session.user = user;
 
-            req.flash('success', 'Login successful!');
+            req.flash(
+                'success',
+                'Login successful!'
+            );
 
             if (res.locals.NODE_ENV === 'development') {
                 console.log('User logged in:', user);
@@ -104,6 +115,36 @@ const requireLogin = (req, res, next) => {
 };
 
 // =========================
+// Require Role Middleware
+// =========================
+
+const requireRole = (role) => {
+    return (req, res, next) => {
+        // User must be logged in
+        if (!req.session || !req.session.user) {
+            req.flash(
+                'error',
+                'You must be logged in to access that page.'
+            );
+
+            return res.redirect('/login');
+        }
+
+        // User must have the required role
+        if (req.session.user.role_name !== role) {
+            req.flash(
+                'error',
+                'You do not have permission to access that page.'
+            );
+
+            return res.redirect('/dashboard');
+        }
+
+        next();
+    };
+};
+
+// =========================
 // Logout
 // =========================
 
@@ -112,7 +153,10 @@ const processLogout = async (req, res) => {
         delete req.session.user;
     }
 
-    req.flash('success', 'Logout successful!');
+    req.flash(
+        'success',
+        'Logout successful!'
+    );
 
     res.redirect('/login');
 };
@@ -127,8 +171,33 @@ const showDashboard = (req, res) => {
     res.render('dashboard', {
         title: 'Dashboard',
         name: user.name,
-        email: user.email
+        email: user.email,
+        role_name: user.role_name
     });
+};
+
+// =========================
+// Users Page
+// =========================
+
+const showUsers = async (req, res) => {
+    try {
+        const users = await getUsers();
+
+        res.render('users', {
+            title: 'Users',
+            users
+        });
+    } catch (error) {
+        console.error('Error getting users:', error);
+
+        req.flash(
+            'error',
+            'Unable to retrieve users.'
+        );
+
+        res.redirect('/dashboard');
+    }
 };
 
 // =========================
@@ -142,5 +211,7 @@ export {
     processLoginForm,
     processLogout,
     requireLogin,
-    showDashboard
+    requireRole,
+    showDashboard,
+    showUsers
 };
