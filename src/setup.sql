@@ -2,6 +2,7 @@
 -- =====================================================
 -- Drop Existing Tables (Optional for rebuilding database)
 -- =====================================================
+DROP TABLE IF EXISTS public.project_volunteer CASCADE;
 DROP TABLE IF EXISTS public.project_category CASCADE;
 DROP TABLE IF EXISTS public.project CASCADE;
 DROP TABLE IF EXISTS public.category CASCADE;
@@ -94,11 +95,37 @@ CREATE TABLE public.project (
     organization_id INT NOT NULL,
     name VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    project_date DATE NOT NULL,
 
     CONSTRAINT fk_project_organization
         FOREIGN KEY (organization_id)
         REFERENCES public.organization(organization_id)
         ON DELETE CASCADE
+);
+
+-- =====================================================
+-- Project Volunteer Junction Table
+-- Many-to-many relationship between users and projects
+-- =====================================================
+CREATE TABLE public.project_volunteer (
+user_id INT NOT NULL,
+project_id INT NOT NULL,
+
+```
+PRIMARY KEY (user_id, project_id),
+
+CONSTRAINT fk_volunteer_user
+    FOREIGN KEY (user_id)
+    REFERENCES public.users(user_id)
+    ON DELETE CASCADE,
+
+CONSTRAINT fk_volunteer_project
+    FOREIGN KEY (project_id)
+    REFERENCES public.project(project_id)
+    ON DELETE CASCADE
+```
+
 );
 
 -- =====================================================
@@ -143,35 +170,109 @@ VALUES
 -- =====================================================
 -- Projects (15 Total)
 -- =====================================================
+
 INSERT INTO public.project
-(organization_id, name, description)
+(organization_id, name, description, location, project_date)
 VALUES
 
 -- Organization 1
-(1,'Community Playground','Build a safe playground for neighborhood children.'),
-(1,'Senior Home Renovation','Repair homes for elderly residents.'),
-(1,'Affordable Housing Project','Construct affordable homes for low-income families.'),
+(1,
+ 'Community Playground',
+ 'Build a safe playground for neighborhood children.',
+ 'Querétaro, Mexico',
+ '2026-09-15'),
+
+(1,
+ 'Senior Home Renovation',
+ 'Repair homes for elderly residents.',
+ 'Querétaro, Mexico',
+ '2026-09-20'),
+
+(1,
+ 'Affordable Housing Project',
+ 'Construct affordable homes for low-income families.',
+ 'Querétaro, Mexico',
+ '2026-10-05'),
+
 
 -- Organization 2
-(2,'Community Garden','Develop neighborhood vegetable gardens.'),
-(2,'Urban Farming Workshops','Teach sustainable farming techniques.'),
-(2,'Food Pantry Expansion','Increase access to nutritious food.'),
+(2,
+ 'Community Garden',
+ 'Develop neighborhood vegetable gardens.',
+ 'Querétaro, Mexico',
+ '2026-09-18'),
+
+(2,
+ 'Urban Farming Workshops',
+ 'Teach sustainable farming techniques.',
+ 'Querétaro, Mexico',
+ '2026-09-25'),
+
+(2,
+ 'Food Pantry Expansion',
+ 'Increase access to nutritious food.',
+ 'Querétaro, Mexico',
+ '2026-10-10'),
+
 
 -- Organization 3
-(3,'Volunteer Recruitment','Recruit and train community volunteers.'),
-(3,'School Supply Drive','Collect and distribute school supplies.'),
-(3,'Holiday Meal Program','Provide meals to families during holidays.'),
+(3,
+ 'Volunteer Recruitment',
+ 'Recruit and train community volunteers.',
+ 'Querétaro, Mexico',
+ '2026-09-12'),
+
+(3,
+ 'School Supply Drive',
+ 'Collect and distribute school supplies.',
+ 'Querétaro, Mexico',
+ '2026-08-25'),
+
+(3,
+ 'Holiday Meal Program',
+ 'Provide meals to families during holidays.',
+ 'Querétaro, Mexico',
+ '2026-12-15'),
+
 
 -- Organization 4
-(4,'Community Health Fair','Offer free health screenings and education.'),
-(4,'Mobile Clinic Support','Provide healthcare services in rural communities.'),
-(4,'Wellness Education Campaign','Promote healthy lifestyles through workshops.'),
+(4,
+ 'Community Health Fair',
+ 'Offer free health screenings and education.',
+ 'Querétaro, Mexico',
+ '2026-10-20'),
+
+(4,
+ 'Mobile Clinic Support',
+ 'Provide healthcare services in rural communities.',
+ 'San Juan del Río, Querétaro',
+ '2026-10-28'),
+
+(4,
+ 'Wellness Education Campaign',
+ 'Promote healthy lifestyles through workshops.',
+ 'Querétaro, Mexico',
+ '2026-11-05'),
+
 
 -- Organization 5
-(5,'Coding Bootcamp','Teach programming skills to students.'),
-(5,'Robotics Club','Support STEM education through robotics activities.'),
-(5,'Computer Donation Drive','Provide refurbished computers to schools.');
+(5,
+ 'Coding Bootcamp',
+ 'Teach programming skills to students.',
+ 'Querétaro, Mexico',
+ '2026-09-30'),
 
+(5,
+ 'Robotics Club',
+ 'Support STEM education through robotics activities.',
+ 'Querétaro, Mexico',
+ '2026-10-15'),
+
+(5,
+ 'Computer Donation Drive',
+ 'Provide refurbished computers to schools.',
+ 'Querétaro, Mexico',
+ '2026-11-10');
 -- =====================================================
 -- Project Categories
 -- =====================================================

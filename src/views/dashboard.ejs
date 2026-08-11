@@ -12,11 +12,71 @@
 <p>Username: <%= email %></p>
 
 <% if (role_name === 'admin') { %>
+
     <p>
         <a href="/users">View All Users</a>
     </p>
+
+<% } %>
+
+<hr>
+
+<h2>Projects I Am Volunteering For</h2>
+
+<% if (volunteerProjects && volunteerProjects.length > 0) { %>
+
+    <ul>
+
+        <% volunteerProjects.forEach(project => { %>
+
+            <li>
+
+                <h3>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.name %>
+                    </a>
+                </h3>
+
+                <p>
+                    <%= project.description %>
+                </p>
+
+                <p>
+                    Organization:
+                    <%= project.organization_name %>
+                </p>
+
+                <p>
+                    Location:
+                    <%= project.location %>
+                </p>
+
+                <p>
+                    Date:
+                    <%= project.project_date %>
+                </p>
+
+                <p>
+                    <a href="/project/<%= project.project_id %>/remove-volunteer">
+                        Remove Me as a Volunteer
+                    </a>
+                </p>
+
+            </li>
+
+        <% }) %>
+
+    </ul>
+
+<% } else { %>
+
+    <p>
+        You are not currently volunteering for any projects.
+    </p>
+
 <% } %>
 
 </div>
 
 <%- include('partials/footer') %>
+
